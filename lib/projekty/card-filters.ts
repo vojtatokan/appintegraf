@@ -34,6 +34,9 @@ function parsePriorityParam(raw: string | null): CardFilters["priorities"] {
   return values.length > 0 ? values : undefined;
 }
 
+/** Jediné místo, které zná množinu URL klíčů patřících CardFilters — sdíleno mezi serializeCardFilters a patchCardFiltersUrl. */
+const CARD_FILTER_URL_KEYS = ["q", "members", "labels", "due", "completed", "priority"] as const;
+
 export function serializeCardFilters(filters: CardFilters): URLSearchParams {
   const sp = new URLSearchParams();
   if (filters.q) sp.set("q", filters.q);
@@ -45,6 +48,24 @@ export function serializeCardFilters(filters: CardFilters): URLSearchParams {
   }
   if (filters.priorities?.length) sp.set("priority", filters.priorities.join(","));
   return sp;
+}
+
+/**
+ * Čistá URL-patch operace pro filtry karet: sloučí `patch` do `filters`, smaže staré
+ * filter klíče z `searchParams` (CARD_FILTER_URL_KEYS) a znovu je serializuje. Ostatní
+ * parametry (view, group, month, card, …) zůstávají beze změny. Vrací query string bez
+ * vedoucího `?` (prázdný řetězec, pokud nezbyly žádné parametry).
+ */
+export function patchCardFiltersUrl(
+  searchParams: URLSearchParams,
+  filters: CardFilters,
+  patch: Partial<CardFilters>,
+): string {
+  const next = { ...filters, ...patch };
+  const sp = new URLSearchParams(searchParams.toString());
+  for (const k of CARD_FILTER_URL_KEYS) sp.delete(k);
+  for (const [k, v] of serializeCardFilters(next).entries()) sp.set(k, v);
+  return sp.toString();
 }
 
 export function matchesFilters(

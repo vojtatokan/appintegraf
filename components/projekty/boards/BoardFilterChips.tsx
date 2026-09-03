@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { X } from "lucide-react";
-import { filterChips, parseCardFilters, serializeCardFilters, type CardFilters } from "@/lib/projekty/card-filters";
+import { filterChips, parseCardFilters, patchCardFiltersUrl, type CardFilters } from "@/lib/projekty/card-filters";
 
 type UserLite = { id: number; email: string | null; name: string | null; image: string | null };
 type Label = { id: string; name: string; color: string };
@@ -17,11 +17,8 @@ export function BoardFilterChips({ members, labels }: { members: UserLite[]; lab
   if (chips.length === 0) return null;
 
   function clear(patch: Partial<CardFilters>) {
-    const next = { ...filters, ...patch };
-    const sp = new URLSearchParams(searchParams.toString());
-    for (const k of ["q", "members", "labels", "due", "completed", "priority"]) sp.delete(k);
-    for (const [k, v] of serializeCardFilters(next).entries()) sp.set(k, v);
-    router.replace(`${pathname}${sp.toString() ? `?${sp.toString()}` : ""}`);
+    const qs = patchCardFiltersUrl(searchParams, filters, patch);
+    router.replace(`${pathname}${qs ? `?${qs}` : ""}`);
   }
 
   return (

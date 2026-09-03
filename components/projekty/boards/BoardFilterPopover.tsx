@@ -8,7 +8,7 @@ import { UserAvatar } from "@/components/projekty/UserAvatar";
 import {
   countActiveFilters,
   parseCardFilters,
-  serializeCardFilters,
+  patchCardFiltersUrl,
   type CardFilters,
 } from "@/lib/projekty/card-filters";
 import { parseBoardGroup, parseBoardView, type BoardGroupBy } from "@/lib/projekty/board-view";
@@ -61,11 +61,8 @@ export function BoardFilterPopover({ members, labels }: { members: UserLite[]; l
   const active = countActiveFilters(filters);
 
   function update(patch: Partial<CardFilters>) {
-    const next = { ...filters, ...patch };
-    const sp = new URLSearchParams(searchParams.toString());
-    for (const k of ["q", "members", "labels", "due", "completed", "priority"]) sp.delete(k);
-    for (const [k, v] of serializeCardFilters(next).entries()) sp.set(k, v);
-    router.replace(`${pathname}${sp.toString() ? `?${sp.toString()}` : ""}`);
+    const qs = patchCardFiltersUrl(searchParams, filters, patch);
+    router.replace(`${pathname}${qs ? `?${qs}` : ""}`);
   }
   function toggleIn(key: "memberIds" | "labelIds", id: string) {
     const ids = new Set(filters[key] ?? []);

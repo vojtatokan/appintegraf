@@ -4,6 +4,7 @@ import {
   filterChips,
   matchesFilters,
   parseCardFilters,
+  patchCardFiltersUrl,
   serializeCardFilters,
   type CardFilters,
 } from "./card-filters";
@@ -160,3 +161,32 @@ describe("filterChips", () => {
     expect(filterChips({ memberIds: ["99"], completed: "any" }, ctx)[0].label).toBe("?");
   });
 });
+
+describe("patchCardFiltersUrl", () => {
+  it("smaže/přepíše jen filter klíče, ostatní parametry (view, group) zachová", () => {
+    const searchParams = new URLSearchParams("view=list&group=due&members=1,2");
+    const filters = parseCardFilters(searchParams);
+    const qs = patchCardFiltersUrl(searchParams, filters, { memberIds: undefined });
+    const result = new URLSearchParams(qs);
+    expect(result.get("view")).toBe("list");
+    expect(result.get("group")).toBe("due");
+    expect(result.has("members")).toBe(false);
+  });
+
+  it("přidá nový filter klíč vedle existujících ne-filter parametrů", () => {
+    const searchParams = new URLSearchParams("view=calendar&month=2026-09");
+    const filters = parseCardFilters(searchParams);
+    const qs = patchCardFiltersUrl(searchParams, filters, { completed: "false" });
+    const result = new URLSearchParams(qs);
+    expect(result.get("completed")).toBe("false");
+    expect(result.get("view")).toBe("calendar");
+    expect(result.get("month")).toBe("2026-09");
+  });
+
+  it("bez zbylých parametrů vrátí prázdný řetězec", () => {
+    const searchParams = new URLSearchParams("completed=false");
+    const filters = parseCardFilters(searchParams);
+    expect(patchCardFiltersUrl(searchParams, filters, { completed: "any" })).toBe("");
+  });
+});
+

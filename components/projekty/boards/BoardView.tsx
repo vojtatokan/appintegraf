@@ -9,7 +9,7 @@ import { BoardToolbar } from "./BoardToolbar";
 import { BoardFilterChips } from "./BoardFilterChips";
 import { KanbanBoard } from "./KanbanBoard";
 import { matchesFilters, parseCardFilters } from "@/lib/projekty/card-filters";
-import { parseBoardView } from "@/lib/projekty/board-view";
+import { boardViewQuery, parseBoardView } from "@/lib/projekty/board-view";
 import { BoardListView } from "./BoardListView";
 import { BoardCalendarView } from "./BoardCalendarView";
 import { BulkSelectionProvider, useBulkSelection } from "./BulkSelectionContext";
@@ -93,9 +93,8 @@ function BoardViewInner({ board, currentUserId, lists, setLists }: BoardViewInne
     }
     const view = parseBoardView(searchParams);
     if (view !== "kanban") {
-      const sp = new URLSearchParams(searchParams.toString());
-      sp.delete("view");
-      router.replace(`${pathname}${sp.toString() ? `?${sp.toString()}` : ""}`);
+      const qs = boardViewQuery(searchParams, "kanban");
+      router.replace(`${pathname}${qs ? `?${qs}` : ""}`);
     }
     setQuickAddListId(first.id);
   }

@@ -12,6 +12,22 @@ export function parseBoardView(
   return "kanban";
 }
 
+/**
+ * Čistá URL-patch operace pro přepnutí pohledu (D4/D6): nastaví/smaže `?view=` a spolu
+ * s ním uklidí parametry patřící jen jinému pohledu (`month` mimo kalendář, `group` mimo
+ * seznam). Vrací query string bez vedoucího `?` (prázdný, pokud nezbyly žádné parametry).
+ * Sdíleno mezi BoardToolbar.setView a BoardView.handleNewCard — stejná invariance musí žít
+ * jen na jednom místě.
+ */
+export function boardViewQuery(searchParams: URLSearchParams, view: BoardViewType): string {
+  const sp = new URLSearchParams(searchParams.toString());
+  if (view === "kanban") sp.delete("view");
+  else sp.set("view", view);
+  if (view !== "calendar") sp.delete("month");
+  if (view !== "list") sp.delete("group");
+  return sp.toString();
+}
+
 export type BoardGroupBy = "list" | "assignee" | "due" | "priority";
 
 const VALID_GROUPS: readonly BoardGroupBy[] = ["list", "assignee", "due", "priority"] as const;

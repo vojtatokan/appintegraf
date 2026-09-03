@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/projekty/ui/dropdown-menu";
-import { parseBoardView, type BoardViewType } from "@/lib/projekty/board-view";
+import { boardViewQuery, parseBoardView, type BoardViewType } from "@/lib/projekty/board-view";
 import type { BoardStats } from "@/lib/projekty/board-stats";
 import { cn } from "@/lib/projekty/utils";
 import { BoardFilterPopover } from "./BoardFilterPopover";
@@ -47,12 +47,8 @@ export function BoardToolbar({
   const current = parseBoardView(searchParams);
 
   function setView(value: BoardViewType) {
-    const sp = new URLSearchParams(searchParams.toString());
-    if (value === "kanban") sp.delete("view");
-    else sp.set("view", value);
-    if (value !== "calendar") sp.delete("month");
-    if (value !== "list") sp.delete("group");
-    router.replace(`${pathname}${sp.toString() ? `?${sp.toString()}` : ""}`);
+    const qs = boardViewQuery(searchParams, value);
+    router.replace(`${pathname}${qs ? `?${qs}` : ""}`);
   }
 
   return (
