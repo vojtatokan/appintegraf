@@ -98,6 +98,7 @@ export function ChecklistItemMenu({
               setSub(null);
             }}
             locale={cs}
+            weekStartsOn={1}
           />
         </PopoverContent>
       ) : null}

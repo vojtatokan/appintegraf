@@ -253,6 +253,7 @@ export function PersonalTodoDetailSheet({
                         setDateOpen(false);
                       }}
                       locale={cs}
+                      weekStartsOn={1}
                     />
                   </PopoverContent>
                 </Popover>

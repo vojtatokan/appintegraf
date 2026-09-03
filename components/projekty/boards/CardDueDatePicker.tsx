@@ -51,6 +51,7 @@ export function CardDueDatePicker({
               setOpen(false);
             }}
             locale={cs}
+            weekStartsOn={1}
           />
         </PopoverContent>
       </Popover>

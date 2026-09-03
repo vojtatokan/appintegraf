@@ -48,6 +48,8 @@ export function DatePicker({ value, onChange, placeholder = "Vyber datum", disab
             onChange(date ? format(date, "yyyy-MM-dd") : "");
             setOpen(false);
           }}
+          locale={cs}
+          weekStartsOn={1}
           autoFocus
         />
       </PopoverContent>
