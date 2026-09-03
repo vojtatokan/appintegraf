@@ -14,7 +14,7 @@ Vždy použij `@/components/ui/*` (sdílená sada appky). Modul nemá vlastní k
 
 ## Design tokeny
 
-- POUZE standardní tokeny z `app/globals.css`: `bg-card`, `bg-background`, `text-muted-foreground`, `border-border`, `--primary`, badge paleta atd.
+- POUZE standardní tokeny z `app/globals.css`: `bg-card`, `bg-background`, `text-muted-foreground`, `border-border`, `--projekty-accent`, badge paleta atd.
 - **ZÁKAZ**: `--notion-canvas`, `--notion-fg`, `--notion-surface`, `--shadow-card`, `--shadow-card-hover`, `--info` — nikde nejsou definované (historická chyba, probíhá migrace 27 souborů). Nové výskyty nevytvářet, při úpravě souboru staré výskyty migrovat na standardní tokeny.
 - Skeleton místo spinnerů pro načítání pohledů; empty states přes `components/ui/empty-state.tsx` (česky, s CTA).
 

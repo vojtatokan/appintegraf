@@ -78,7 +78,7 @@ Cíl: jeden vizuální jazyk na standardních tokenech, „Linear look".
 4. **Vlna 5B — zbytek funkcí A**: @mentions autocomplete, watchers, šablony, opakující se úkoly, uložené pohledy (+ fulltext až bude MySQL config).
 
    Pořadí od vlny 6 dále přebírá `MODUL_PROJEKTY_ZJEDNODUSENI_SPEC.md` (vlny 7 a 8 navazují na vlnu 6 — Ubrat níže).
-5. **Vlna 6 — Ubrat**: ✅ HOTOVO (3. 9. 2026, 17 commitů) — viz `MODUL_PROJEKTY_ZJEDNODUSENI_SPEC.md`.
+5. **Vlna 6 — Ubrat**: ✅ HOTOVO (3. 9. 2026, 19 commitů) — viz `MODUL_PROJEKTY_ZJEDNODUSENI_SPEC.md`.
 6. *(dříve plánováno jako „Vlna 6 — funkce B", nyní mimo scope vln 6–8, zůstává v backlogu)*: automatizační recepty, přehled projektu, inbox se snooze, přesun mezi boardy, UI archivu.
 
 ### Vědomá zjednodušení vlny 5A

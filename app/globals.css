@@ -62,6 +62,7 @@ body {
   --color-ring: var(--ring);
   --color-projekty-accent: var(--projekty-accent);
   --color-projekty-accent-soft: var(--projekty-accent-soft);
+  --color-projekty-accent-foreground: var(--projekty-accent-foreground);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -78,6 +79,7 @@ body {
   /* Modul Projekty — jediný akcent modulu (D19). Brand červená (--primary) se v modulu nepoužívá. */
   --projekty-accent: oklch(0.55 0.19 262);
   --projekty-accent-soft: oklch(0.94 0.03 262);
+  --projekty-accent-foreground: oklch(1 0 0);
   --background: oklch(0.97 0.008 248);
   --foreground: oklch(0.22 0.02 248);
   --card: oklch(1 0 0);
@@ -190,6 +192,7 @@ body {
   --badge-black: #64748b;
   --projekty-accent: oklch(0.72 0.14 262);
   --projekty-accent-soft: oklch(0.28 0.06 262);
+  --projekty-accent-foreground: oklch(0.16 0.012 255);
 }
 
 /* Ikony na kartách – pastel červeň s dobrým kontrastem */

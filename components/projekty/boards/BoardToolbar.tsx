@@ -87,7 +87,7 @@ export function BoardToolbar({
 
       <BoardFilterPopover members={members} labels={labels} />
 
-      <Button size="sm" onClick={onNewCard} className="bg-projekty-accent text-white hover:bg-projekty-accent/90">
+      <Button size="sm" onClick={onNewCard} className="bg-projekty-accent text-projekty-accent-foreground hover:bg-projekty-accent/90">
         <Plus className="size-3.5" /> <span className="hidden sm:inline">Nová karta</span>
       </Button>
 
