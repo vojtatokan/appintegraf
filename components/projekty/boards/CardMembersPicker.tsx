@@ -6,6 +6,7 @@ import { Button } from "@/components/projekty/ui/button";
 import { UserAvatar } from "@/components/projekty/UserAvatar";
 import { Users, Check } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/projekty/utils";
 
 type UserLite = { id: number; email: string | null; name: string | null; image: string | null };
 
@@ -54,9 +55,13 @@ export function CardMembersPicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-7 -ml-2 px-2 font-normal">
+        <Button
+          variant="ghost"
+          size="sm"
+          className={cn("h-7 -ml-2 px-2 font-normal", assignedUserIds.length === 0 && "text-muted-foreground")}
+        >
           <Users className="mr-2 size-4" />
-          Členové ({assignedUserIds.length})
+          {assignedUserIds.length === 0 ? "Přiřadit" : `Členové (${assignedUserIds.length})`}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-72 p-0" align="start">

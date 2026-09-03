@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/projekty/utils";
 import { CardLabelsPicker } from "./CardLabelsPicker";
@@ -10,6 +10,31 @@ import { CardActivityFeed } from "./CardActivityFeed";
 import type { FullCard } from "./CardDetailContent";
 
 const STORAGE_KEY = "projekty-card-more-open";
+
+// Modulová store nad localStorage — vyhýbá se setState v efektu při mountu
+// (react-hooks/set-state-in-effect) a zůstává SSR-safe (server snapshot false).
+const listeners = new Set<() => void>();
+function subscribe(cb: () => void) {
+  listeners.add(cb);
+  return () => {
+    listeners.delete(cb);
+  };
+}
+function readOpen(): boolean {
+  try {
+    return localStorage.getItem(STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+function writeOpen(next: boolean) {
+  try {
+    localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
+  } catch {
+    /* private mode */
+  }
+  listeners.forEach((l) => l());
+}
 
 /** Vrstva 2 detailu (D10): štítky, priorita, přílohy, historie. Stav rozbalení si pamatuje prohlížeč. */
 export function CardDetailMore({
@@ -23,22 +48,9 @@ export function CardDetailMore({
   onPatch: (patch: Record<string, unknown>) => Promise<void>;
   onCardChange: (updater: (prev: FullCard) => FullCard) => void;
 }) {
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    try {
-      setOpen(localStorage.getItem(STORAGE_KEY) === "1");
-    } catch {
-      /* private mode */
-    }
-  }, []);
+  const open = useSyncExternalStore(subscribe, readOpen, () => false);
   function toggle() {
-    const next = !open;
-    setOpen(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, next ? "1" : "0");
-    } catch {
-      /* private mode */
-    }
+    writeOpen(!open);
   }
 
   const boardLabels = card.list.board.labels;

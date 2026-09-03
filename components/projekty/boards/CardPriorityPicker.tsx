@@ -35,7 +35,12 @@ export function CardPriorityPicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" disabled={disabled} className="h-7 -ml-2 px-2 font-normal">
+        <Button
+          variant="ghost"
+          size="sm"
+          disabled={disabled}
+          className={cn("h-7 -ml-2 px-2 font-normal", !value && "text-muted-foreground")}
+        >
           {value ? (
             <span
               className={cn("mr-2 size-2 rounded-full", PRIORITY_DOT_CLASSES[value])}
@@ -44,7 +49,7 @@ export function CardPriorityPicker({
           ) : (
             <Flag className="mr-2 size-4" />
           )}
-          {value ? PRIORITY_LABELS[value] : "Priorita"}
+          {value ? PRIORITY_LABELS[value] : "Bez priority"}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-44 p-1" align="start">

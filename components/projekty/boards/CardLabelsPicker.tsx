@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/u
 import { Button } from "@/components/projekty/ui/button";
 import { Tag, Check } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/projekty/utils";
 
 type Label = { id: string; name: string; color: string };
 
@@ -50,9 +51,13 @@ export function CardLabelsPicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-7 -ml-2 px-2 font-normal">
+        <Button
+          variant="ghost"
+          size="sm"
+          className={cn("h-7 -ml-2 px-2 font-normal", assignedLabelIds.length === 0 && "text-muted-foreground")}
+        >
           <Tag className="mr-2 size-4" />
-          Labely ({assignedLabelIds.length})
+          {assignedLabelIds.length === 0 ? "Přidat štítek" : `Labely (${assignedLabelIds.length})`}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-64 p-0" align="start">
