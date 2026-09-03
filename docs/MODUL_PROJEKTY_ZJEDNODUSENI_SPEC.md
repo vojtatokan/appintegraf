@@ -1,6 +1,6 @@
 # Modul Projekty — spec zjednodušení (vlny 6–8)
 
-Datum: 3. 9. 2026 · Autor: Claude Code (Fable 5.1) pro Vojtu Ťokana · Stav: **návrh k review** (kód zatím nevznikl)
+Datum: 3. 9. 2026 · Autor: Claude Code (Fable 5.1) pro Vojtu Ťokana · Stav: vlna 6 hotová v kódu (3. 9. 2026, větev feat/projekty-vlna6, čeká na vizuální review a nasazení), vlna 7 v plánu
 
 Podklady: noční research 2.–3. 9. 2026 (10 PM nástrojů + audit modulu), klikací prototyp <https://claude.ai/code/artifact/e31c0ae2-bba8-41af-bd90-9e5207a2b016>, report s rozhodnutími <https://claude.ai/code/artifact/fc962580-2b8f-466c-9715-81c4d791569d>. Kopie reportů: `integraf-todo-trello/docs/research/2026-09-03-projekty-simplification/`.
 

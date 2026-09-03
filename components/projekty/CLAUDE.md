@@ -12,16 +12,22 @@ Vždy použij `@/components/ui/*` (sdílená sada appky). Modul nemá vlastní k
 - Dialogy a popovery na mobilu: `@/components/ui/responsive-dialog` / `@/components/ui/responsive-popover` (mění se na sheet/drawer).
 - Toasty: `sonner` přes `@/components/ui/sonner` (`<Toaster>` mountnutý v `app/(dashboard)/projekty/layout.tsx`; u destruktivních akcí vždy s akcí „Zpět"). Command palette: `cmdk`. Ikony: `lucide-react`. Drag & drop: `@dnd-kit` + sensory z `lib/projekty/dnd-sensors.ts`.
 
-## Design tokeny a vizuální jazyk
+## Design tokeny
 
 - POUZE standardní tokeny z `app/globals.css`: `bg-card`, `bg-background`, `text-muted-foreground`, `border-border`, `--primary`, badge paleta atd.
 - **ZÁKAZ**: `--notion-canvas`, `--notion-fg`, `--notion-surface`, `--shadow-card`, `--shadow-card-hover`, `--info` — nikde nejsou definované (historická chyba, probíhá migrace 27 souborů). Nové výskyty nevytvářet, při úpravě souboru staré výskyty migrovat na standardní tokeny.
-- Vizuální jazyk („Linear škola"):
-  - border jako klidový stav karet, stín jen na hover (`hover:shadow-sm`) a drag; radius umírněně (`rounded-lg` karty, `rounded-md` chipy)
-  - typografická škála: UI/seznamy `text-[13px]`, text `text-sm`, sekční nadpis `text-sm font-semibold`, titulek `text-lg font-semibold tracking-tight`; čísla `tabular-nums`
-  - plná sytost barev jen pro statusy, priority a urgentní termíny; dark mode chipy `bg-{barva}-500/15 text-{barva}-400`
-  - transitions 150 ms (`transition-colors duration-150`, `motion-reduce:transition-none`), akce řádků/karet `opacity-0 group-hover:opacity-100`
-  - skeleton místo spinnerů pro načítání pohledů; empty states přes `components/projekty/ui/empty-state.tsx` (česky, s CTA)
+- Skeleton místo spinnerů pro načítání pohledů; empty states přes `components/ui/empty-state.tsx` (česky, s CTA).
+
+## Vizuální jazyk (spec MODUL_PROJEKTY_ZJEDNODUSENI_SPEC.md §5, pravidla C1–C14)
+
+- Akcent modulu: `projekty-accent` (modrá). `--primary` (brand červená) se v modulu nepoužívá.
+- Sytá barva jen pro stav: po termínu (red), dnes (amber), hotovo (emerald), urgentní priorita (red/orange). Sloupec a štítek = malý tvar (tečka 8 px, proužek 3 px), nikdy plocha.
+- Border-first: `rounded-lg border border-border bg-card`; stín jen `hover:shadow-sm` a při dragu.
+- Písmo: 4 velikosti — `text-[22px]` titulek stránky, `text-sm` text, `text-[13px]` UI/seznamy, `text-xs` metadata. Hierarchie vahou (`font-medium`/`font-semibold`).
+- Karta: název + max 3 metadata (termín, checklist, avatar) — rozhoduje `lib/projekty/card-meta.ts`.
+- Detail: 6 polí hned, zbytek pod „Více". Nový údaj na kartě/v detailu = nejdřív ukázat, že neporuší C2/C3.
+- Jedno primární (plné) tlačítko na obrazovce. Menu max 5 položek. Modal jen pro destruktivní potvrzení.
+- Motion: `transition-colors duration-150 motion-reduce:transition-none`; sekundární akce `opacity-0 group-hover:opacity-100`, na `pointer: coarse` vždy viditelné.
 
 ## Data a API vzory
 
