@@ -59,7 +59,7 @@ export function TodoStatusCheckbox({
         "grid shrink-0 place-items-center rounded-md border transition-all",
         dim,
         status === "DONE" &&
-          "border-primary bg-primary text-primary-foreground",
+          "border-emerald-600 bg-emerald-600 text-white dark:border-emerald-500 dark:bg-emerald-500",
         status === "IN_PROGRESS" &&
           "border-amber-500 bg-amber-500 text-white",
         status === "NOT_STARTED" &&

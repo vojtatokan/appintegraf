@@ -120,7 +120,7 @@ export function ListCardRow({
       className={cn(
         "group flex w-full touch-none items-center gap-3 border-b border-border/60 px-4 py-2 text-left transition-colors hover:bg-muted/50",
         dragDisabled ? "cursor-pointer" : "cursor-grab active:cursor-grabbing",
-        isSelected && !isTouch && "border-l-4 border-l-primary bg-primary/5",
+        isSelected && !isTouch && "border-l-4 border-l-projekty-accent bg-projekty-accent-soft",
       )}
     >
       {/* ☐ Completed */}

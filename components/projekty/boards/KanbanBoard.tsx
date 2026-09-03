@@ -339,7 +339,7 @@ export function KanbanBoard({
       />
       <DragOverlay dropAnimation={null}>
         {activeCard && dragIds.length > 1 ? (
-          <div className="rounded-lg border-2 border-primary bg-card p-3 shadow-lg">
+          <div className="rounded-lg border-2 border-projekty-accent bg-card p-3 shadow-lg">
             <div className="text-sm font-medium">{activeCard.title}</div>
             <div className="mt-1 text-xs text-muted-foreground">
               +{dragIds.length - 1} dalších karet

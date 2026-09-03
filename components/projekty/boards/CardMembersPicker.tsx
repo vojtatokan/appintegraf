@@ -80,7 +80,7 @@ export function CardMembersPicker({
                 >
                   <UserAvatar user={u} className="size-6" />
                   <span className="flex-1 text-sm">{u.name ?? u.email ?? "—"}</span>
-                  {assigned ? <Check className="size-4 text-primary" /> : null}
+                  {assigned ? <Check className="size-4 text-projekty-accent" /> : null}
                 </button>
               );
             })

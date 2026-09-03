@@ -104,7 +104,7 @@ export function CardQuickAdd({ listId, onCreated, open: controlledOpen, onOpenCh
           type="button"
           onClick={() => void handleCreate()}
           disabled={busy || !title.trim()}
-          className="rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-md bg-projekty-accent px-3 py-1 text-xs font-medium text-white transition-colors hover:bg-projekty-accent/90 disabled:cursor-not-allowed disabled:opacity-40"
         >
           {busy ? "Přidávám…" : "Přidat"}
         </button>

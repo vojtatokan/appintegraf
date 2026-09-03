@@ -78,7 +78,7 @@ export function CardLabelsPicker({
                 >
                   <span className="size-4 shrink-0 rounded" style={{ backgroundColor: l.color }} />
                   <span className="flex-1 text-sm">{l.name}</span>
-                  {assigned ? <Check className="size-4 text-primary" /> : null}
+                  {assigned ? <Check className="size-4 text-projekty-accent" /> : null}
                 </button>
               );
             })

@@ -107,14 +107,14 @@ export function CardAttachmentsSection({
           if (file) void handleUpload(file);
         }}
         className={`rounded border-2 border-dashed p-4 text-center text-sm transition-colors ${
-          dragging ? "border-primary bg-primary/10" : "border-muted-foreground/30"
+          dragging ? "border-projekty-accent bg-projekty-accent-soft" : "border-muted-foreground/30"
         }`}
       >
         <Upload className="mx-auto mb-2 size-5 text-muted-foreground" />
         <p className="text-muted-foreground">
           Přetáhni soubor sem nebo{" "}
           <button
-            className="text-primary underline"
+            className="text-projekty-accent underline"
             onClick={() => fileInputRef.current?.click()}
             disabled={busy}
           >
