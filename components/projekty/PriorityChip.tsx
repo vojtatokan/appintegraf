@@ -1,3 +1,4 @@
+import { Flag } from "lucide-react";
 import { cn } from "@/lib/projekty/utils";
 import {
   PRIORITY_CHIP_CLASSES,
@@ -17,11 +18,28 @@ export function PriorityChip({
   className,
 }: {
   priority: CardPriorityValue | null | undefined;
-  variant?: "chip" | "dot";
+  variant?: "chip" | "dot" | "flag";
   className?: string;
 }) {
   if (!priority) return null;
   const label = PRIORITY_LABELS[priority];
+
+  if (variant === "flag") {
+    if (priority !== "URGENT" && priority !== "HIGH") return null;
+    return (
+      <span
+        className={cn(
+          "inline-flex shrink-0 items-center",
+          priority === "URGENT" ? "text-red-600 dark:text-red-400" : "text-orange-600 dark:text-orange-400",
+          className,
+        )}
+        title={`Priorita: ${label}`}
+      >
+        <Flag className="size-3" strokeWidth={2} aria-hidden />
+        <span className="sr-only">{`Priorita: ${label}`}</span>
+      </span>
+    );
+  }
 
   if (variant === "dot") {
     return (

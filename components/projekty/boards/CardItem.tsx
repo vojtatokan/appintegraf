@@ -6,8 +6,8 @@ import { CSS } from "@dnd-kit/utilities";
 import { CheckCircle2, CheckSquare } from "lucide-react";
 import { UserAvatar } from "@/components/projekty/UserAvatar";
 import { DueDateBadge } from "@/components/projekty/DueDateBadge";
-import { LabelChip } from "@/components/projekty/LabelChip";
 import { PriorityChip } from "@/components/projekty/PriorityChip";
+import { cardMeta } from "@/lib/projekty/card-meta";
 import type { CardPriorityValue } from "@/lib/projekty/priority";
 import { cn } from "@/lib/projekty/utils";
 import { useBulkSelection } from "./BulkSelectionContext";
@@ -50,74 +50,54 @@ function CardItemBody({
   boardId: string;
   asLink: boolean;
 }) {
-  const due = card.dueDate ? new Date(card.dueDate) : null;
-  const primaryMember = card.members[0]?.user;
-  const extraMembersCount = card.members.length - 1;
-  const primaryLabel = card.labels[0]?.label;
-  const extraLabelsCount = card.labels.length - 1;
-
-  const checklistTotal = card.checklistTotal ?? 0;
-  const checklistDone = card.checklistDone ?? 0;
-  // Jen počet položek (done/total) — počet checklistů by ve stejném slotu
-  // měnil význam čísla (karta jen s prázdnými checklisty counter nemá).
-  const hasChecklist = checklistTotal > 0;
-  const hasAnyMeta = Boolean(
-    card.priority || primaryLabel || due || hasChecklist || primaryMember,
-  );
+  const meta = cardMeta(card);
+  const hasMeta = meta.flag !== null || meta.metaCount > 0;
 
   const content = (
-    <div className="px-3 py-2">
+    <div className="relative py-2 pl-3.5 pr-3">
+      {meta.labelStrip ? (
+        <span
+          className="absolute inset-y-0 left-0 w-[3px]"
+          style={{ backgroundColor: meta.labelStrip.color }}
+          title={meta.labelStrip.title}
+          aria-label={`Štítky: ${meta.labelStrip.title}`}
+        />
+      ) : null}
+
       <div className="flex items-start gap-1.5">
         {card.completed ? (
           <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden />
         ) : null}
         <div
-          className={`flex-1 text-sm font-medium leading-snug ${
-            card.completed
-              ? "text-muted-foreground/70 line-through"
-              : "text-foreground"
-          }`}
+          className={cn(
+            "flex-1 text-[13px] leading-snug",
+            card.completed ? "text-muted-foreground/70 line-through" : "text-foreground",
+          )}
         >
           {card.title}
         </div>
       </div>
 
-      {hasAnyMeta ? (
+      {hasMeta ? (
         <div className="mt-1.5 flex items-center gap-2 text-xs text-muted-foreground">
-          {/* Tečka místo chipu — meta řádek kanban karty je nejtěsnější slot v modulu. */}
-          <PriorityChip priority={card.priority} variant="dot" />
-          {primaryLabel ? (
-            <span className="inline-flex min-w-0 items-center gap-1">
-              <LabelChip
-                name={primaryLabel.name}
-                color={primaryLabel.color}
-                className="-my-0.5 max-w-[8rem]"
-              />
-              {extraLabelsCount > 0 ? (
-                <span className="text-muted-foreground/70">+{extraLabelsCount}</span>
-              ) : null}
-            </span>
+          <PriorityChip priority={card.priority} variant="flag" />
+          {meta.due ? (
+            <DueDateBadge due={meta.due} completed={card.completed} className="-my-0.5" />
           ) : null}
-          {due ? (
-            <DueDateBadge due={due} completed={card.completed} className="-my-0.5" />
-          ) : null}
-          {hasChecklist ? (
+          {meta.checklist ? (
             <span
               className={cn(
                 "inline-flex items-center gap-1 tabular-nums",
-                checklistDone === checklistTotal && "text-emerald-600 dark:text-emerald-400",
+                meta.checklist.complete && "text-emerald-600 dark:text-emerald-400",
               )}
             >
               <CheckSquare className="size-3" aria-hidden />
-              {`${checklistDone}/${checklistTotal}`}
+              {`${meta.checklist.done}/${meta.checklist.total}`}
             </span>
           ) : null}
-          {primaryMember ? (
-            <span className="ml-auto inline-flex items-center gap-1">
-              <UserAvatar user={primaryMember} size="xs" />
-              {extraMembersCount > 0 ? (
-                <span className="text-muted-foreground">+{extraMembersCount}</span>
-              ) : null}
+          {meta.owner ? (
+            <span className="ml-auto inline-flex items-center">
+              <UserAvatar user={meta.owner} size="xs" />
             </span>
           ) : null}
         </div>
@@ -197,7 +177,7 @@ export function CardItem({
         // Ghost na původní pozici — vybledlý s čárkovaným okrajem (Linear vzor);
         // primární fokus je DragOverlay u kurzoru.
         isDragging && "border-dashed opacity-40",
-        isSelected && !isTouch && "border-primary ring-1 ring-primary hover:shadow-none",
+        isSelected && !isTouch && "border-projekty-accent ring-1 ring-projekty-accent hover:shadow-none",
       )}
     >
       <CardItemBody card={card} boardId={boardId} asLink />
