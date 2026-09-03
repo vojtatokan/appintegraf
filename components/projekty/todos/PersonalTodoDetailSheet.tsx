@@ -313,7 +313,7 @@ export function PersonalTodoDetailSheet({
               </PropertyRow>
             </div>
 
-            {/* Description — rich Tiptap (slash menu, headings, callouts, toggles…) */}
+            {/* Description — Tiptap editor se šesti tlačítky (D11) */}
             <div className="mt-6 space-y-1.5">
               <label className="block text-[11px] font-medium uppercase tracking-wider text-muted-foreground/70">
                 Popis
@@ -322,8 +322,7 @@ export function PersonalTodoDetailSheet({
                 key={todo.id}
                 value={descDraft}
                 onChange={setDescDraft}
-                placeholder="Stiskni / pro bloky, jinak piš…"
-                variant="rich"
+                placeholder="Piš popis…"
               />
               <p className="pt-1 text-[11px] text-muted-foreground/70">
                 Změny se uloží automaticky.

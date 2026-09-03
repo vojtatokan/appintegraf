@@ -39,9 +39,9 @@ export function LinkPopover({ editor }: { editor: Editor }) {
       <PopoverTrigger asChild>
         <Button
           type="button"
-          size="icon"
+          size="icon-sm"
           variant={isActive ? "default" : "ghost"}
-          className="size-9 sm:size-7"
+          className="size-7 text-muted-foreground"
           onClick={openPopover}
           aria-label="Odkaz"
         >
