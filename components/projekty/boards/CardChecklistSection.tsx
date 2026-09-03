@@ -4,8 +4,10 @@ import { useState } from "react";
 import { Button } from "@/components/projekty/ui/button";
 import { ConfirmDialog } from "@/components/projekty/ui/confirm-dialog";
 import { Input } from "@/components/projekty/ui/input";
-import { CheckSquare, Plus, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { canAddAnotherChecklist, summarizeChecklists } from "@/lib/projekty/checklist-summary";
+import { ChecklistItemAddInline } from "./ChecklistItemAddInline";
 import { ChecklistItemRow, type ChecklistItem } from "./ChecklistItemRow";
 
 export type Checklist = {
@@ -30,6 +32,23 @@ export function CardChecklistSection({
   const [checklists, setChecklists] = useState<Checklist[]>(initial);
   const [addingTitle, setAddingTitle] = useState(false);
   const [newTitle, setNewTitle] = useState("");
+
+  async function ensureChecklist(): Promise<Checklist | null> {
+    if (checklists[0]) return checklists[0];
+    const res = await fetch(`/api/projekty/cards/${cardId}/checklists`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ name: "Checklist" }),
+    });
+    if (!res.ok) {
+      toast.error("Vytvoření checklistu selhalo.");
+      return null;
+    }
+    const { checklist } = (await res.json()) as { checklist: Checklist };
+    const created = { ...checklist, items: checklist.items ?? [] };
+    setChecklists((prev) => [...prev, created]);
+    return created;
+  }
 
   async function handleAddChecklist() {
     const trimmed = newTitle.trim();
@@ -78,172 +97,111 @@ export function CardChecklistSection({
     );
   }
 
+  const summary = summarizeChecklists(checklists);
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="flex items-center gap-2 text-[13px] font-semibold tracking-tight text-foreground">
-          <CheckSquare className="size-4" /> Checklisty
-        </h3>
-        {!addingTitle ? (
-          <Button size="sm" variant="outline" onClick={() => setAddingTitle(true)}>
-            <Plus className="mr-1 size-3.5" /> Nový checklist
-          </Button>
-        ) : null}
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Checklist</h3>
+        {summary.total > 0 ? <span className="text-xs tabular-nums text-muted-foreground">{summary.done}/{summary.total}</span> : null}
       </div>
-
-      {addingTitle ? (
-        <div className="flex gap-2">
-          <Input
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") void handleAddChecklist();
-              if (e.key === "Escape") {
-                setAddingTitle(false);
-                setNewTitle("");
-              }
-            }}
-            placeholder="Název checklistu…"
-            autoFocus
-            className="h-8"
-          />
-          <Button size="sm" onClick={() => void handleAddChecklist()}>
-            Přidat
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => {
-              setAddingTitle(false);
-              setNewTitle("");
-            }}
-          >
-            Zrušit
-          </Button>
+      {summary.total > 0 ? (
+        <div className="flex items-center gap-2">
+          <div className="h-1 flex-1 overflow-hidden rounded-full border border-border bg-muted/40">
+            <div className="h-full bg-emerald-600 transition-[width] duration-200 motion-reduce:transition-none dark:bg-emerald-500" style={{ width: `${summary.pct}%` }} />
+          </div>
+          <span className="text-xs tabular-nums text-muted-foreground">{summary.pct} %</span>
         </div>
       ) : null}
 
-      {checklists.map((cl) => {
-        const total = cl.items.length;
-        const done = cl.items.filter((i) => i.done).length;
-        const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-        return (
-          <div key={cl.id} className="space-y-2 rounded border p-3">
-            <div className="flex items-center justify-between">
-              <h4 className="text-sm font-medium">{cl.name}</h4>
+      {checklists.map((cl) => (
+        <div key={cl.id} className="space-y-0.5">
+          {checklists.length > 1 ? (
+            <div className="flex items-center justify-between pt-2">
+              <h4 className="text-[13px] font-medium">{cl.name}</h4>
               <ConfirmDialog
-                trigger={
-                  <Button size="icon" variant="ghost" className="size-6">
-                    <Trash2 className="size-3" />
-                  </Button>
-                }
-                title={`Smazat checklist „${cl.name}"?`}
-                description="Smaže checklist včetně všech jeho položek."
+                trigger={<Button size="icon-xs" variant="ghost" aria-label="Smazat seznam" className="text-muted-foreground"><Trash2 className="size-3.5" /></Button>}
+                title={`Smazat seznam „${cl.name}“?`}
+                description="Smaže seznam včetně všech položek."
                 destructive
                 confirmLabel="Smazat"
                 onConfirm={() => handleDeleteChecklist(cl.id)}
               />
             </div>
-            <div className="h-1.5 overflow-hidden rounded bg-muted">
-              <div
-                className="h-full bg-primary transition-all"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {done} / {total} ({pct}%)
-            </p>
-            <div className="space-y-1">
-              {cl.items.map((item) => (
-                <ChecklistItemRow
-                  key={item.id}
-                  item={item}
-                  boardMembers={boardMembers}
-                  onUpdate={(updated) =>
-                    setChecklists((prev) =>
-                      prev.map((c) =>
-                        c.id === cl.id
-                          ? {
-                              ...c,
-                              items: c.items.map((i) =>
-                                i.id === updated.id ? updated : i,
-                              ),
-                            }
-                          : c,
-                      ),
-                    )
-                  }
-                  onDelete={() =>
-                    setChecklists((prev) =>
-                      prev.map((c) =>
-                        c.id === cl.id
-                          ? { ...c, items: c.items.filter((i) => i.id !== item.id) }
-                          : c,
-                      ),
-                    )
-                  }
-                />
-              ))}
-              <ChecklistItemAddInline checklistId={cl.id} onAdd={handleAddItem} />
-            </div>
+          ) : null}
+          {cl.items.map((item) => (
+            <ChecklistItemRow
+              key={item.id}
+              item={item}
+              boardMembers={boardMembers}
+              onUpdate={(updated) =>
+                setChecklists((prev) =>
+                  prev.map((c) =>
+                    c.id === cl.id
+                      ? { ...c, items: c.items.map((i) => (i.id === updated.id ? updated : i)) }
+                      : c,
+                  ),
+                )
+              }
+              onDelete={() =>
+                setChecklists((prev) =>
+                  prev.map((c) =>
+                    c.id === cl.id ? { ...c, items: c.items.filter((i) => i.id !== item.id) } : c,
+                  ),
+                )
+              }
+            />
+          ))}
+          <ChecklistItemAddInline checklistId={cl.id} onAdd={(_id, text) => handleAddItem(cl.id, text)} />
+        </div>
+      ))}
+
+      {checklists.length === 0 ? (
+        <ChecklistItemAddInline
+          checklistId={null}
+          onAdd={async (_id, text) => {
+            const cl = await ensureChecklist();
+            if (cl) await handleAddItem(cl.id, text);
+          }}
+        />
+      ) : null}
+
+      {canAddAnotherChecklist(checklists) ? (
+        !addingTitle ? (
+          <button type="button" onClick={() => setAddingTitle(true)} className="text-xs text-muted-foreground hover:text-foreground">
+            + Přidat další seznam
+          </button>
+        ) : (
+          <div className="flex gap-2">
+            <Input
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") void handleAddChecklist();
+                if (e.key === "Escape") {
+                  setAddingTitle(false);
+                  setNewTitle("");
+                }
+              }}
+              placeholder="Název checklistu…"
+              autoFocus
+              className="h-7 text-[13px]"
+            />
+            <Button size="sm" onClick={() => void handleAddChecklist()}>
+              Přidat
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                setAddingTitle(false);
+                setNewTitle("");
+              }}
+            >
+              Zrušit
+            </Button>
           </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function ChecklistItemAddInline({
-  checklistId,
-  onAdd,
-}: {
-  checklistId: string;
-  onAdd: (id: string, text: string) => void | Promise<void>;
-}) {
-  const [active, setActive] = useState(false);
-  const [text, setText] = useState("");
-
-  async function handleAdd() {
-    const trimmed = text.trim();
-    if (!trimmed) {
-      setActive(false);
-      setText("");
-      return;
-    }
-    await onAdd(checklistId, trimmed);
-    setText("");
-  }
-
-  if (!active) {
-    return (
-      <button
-        onClick={() => setActive(true)}
-        className="flex w-full items-center gap-2 rounded px-1 py-1 text-xs text-muted-foreground hover:bg-muted/40"
-      >
-        <Plus className="size-3" /> Přidat položku
-      </button>
-    );
-  }
-
-  return (
-    <div className="flex gap-2">
-      <Input
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") void handleAdd();
-          if (e.key === "Escape") {
-            setActive(false);
-            setText("");
-          }
-        }}
-        placeholder="Položka…"
-        autoFocus
-        className="h-7 text-sm"
-      />
-      <Button size="sm" onClick={() => void handleAdd()}>
-        Přidat
-      </Button>
+        )
+      ) : null}
     </div>
   );
 }

@@ -2,16 +2,11 @@
 
 import { useState } from "react";
 import { Checkbox } from "@/components/projekty/ui/checkbox";
-import { Button } from "@/components/projekty/ui/button";
-import { ConfirmDialog } from "@/components/projekty/ui/confirm-dialog";
 import { Input } from "@/components/projekty/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
-import { Calendar as CalendarPicker } from "@/components/projekty/ui/calendar";
 import { UserAvatar } from "@/components/projekty/UserAvatar";
-import { Trash2, User as UserIcon, Calendar, X, Check } from "lucide-react";
 import { DueDateBadge } from "@/components/projekty/DueDateBadge";
-import { cs } from "date-fns/locale";
 import { toast } from "sonner";
+import { ChecklistItemMenu } from "./ChecklistItemMenu";
 
 type UserLite = { id: number; email: string | null; name: string | null; image: string | null };
 
@@ -90,126 +85,42 @@ export function ChecklistItemRow({
   const due = item.dueDate ? new Date(item.dueDate) : null;
 
   return (
-    <div className="group flex items-start gap-2 rounded px-1 py-1 hover:bg-muted/40">
-      <Checkbox
-        checked={item.done}
-        disabled={busy}
-        onCheckedChange={(v) => void handleToggle(Boolean(v))}
-        className="mt-0.5"
-      />
-      <div className="flex flex-1 flex-col gap-1">
-        {editing ? (
-          <Input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onBlur={() => void handleTextSave()}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") void handleTextSave();
-              if (e.key === "Escape") {
-                setText(item.text);
-                setEditing(false);
-              }
-            }}
-            autoFocus
-            className="h-7 text-sm"
-            disabled={busy}
-          />
-        ) : (
-          <button
-            onClick={() => setEditing(true)}
-            className={`text-left text-sm ${item.done ? "text-muted-foreground line-through" : ""}`}
-          >
-            {item.text}
-          </button>
-        )}
-
-        {(assignee || due) ? (
-          <div className="flex items-center gap-2 text-xs">
-            {assignee ? (
-              <button
-                onClick={() => void patch({ assigneeId: null })}
-                className="flex items-center gap-1 rounded bg-muted px-1.5 py-0.5 hover:bg-muted/60"
-                title="Odebrat assignee"
-              >
-                <UserAvatar user={assignee} className="size-4" />
-                <span className="truncate">{assignee.name ?? assignee.email ?? "—"}</span>
-                <X className="size-3" />
-              </button>
-            ) : null}
-            {due ? (
-              <button
-                onClick={() => void patch({ dueDate: null })}
-                className="flex items-center gap-1 hover:opacity-80"
-                title="Odebrat termín"
-              >
-                <DueDateBadge due={due} completed={item.done} variant="withYear" />
-                <X className="size-3 text-muted-foreground" />
-              </button>
-            ) : null}
-          </div>
-        ) : null}
-      </div>
-
-      <div className="flex items-center gap-1 opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-within:opacity-100 motion-reduce:transition-none">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button size="icon" variant="ghost" className="size-6" disabled={busy}>
-              <UserIcon className="size-3" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-56 p-2" align="end">
-            {boardMembers.length === 0 ? (
-              <p className="px-2 py-1 text-xs text-muted-foreground">Žádní členové.</p>
-            ) : (
-              boardMembers.map((u) => (
-                <button
-                  key={u.id}
-                  onClick={() => void patch({ assigneeId: u.id })}
-                  className="flex w-full items-center gap-2 rounded px-2 py-1 text-left text-sm hover:bg-muted/60"
-                >
-                  <UserAvatar user={u} className="size-5" />
-                  <span className="flex-1">{u.name ?? u.email ?? "—"}</span>
-                  {item.assigneeId === u.id ? <Check className="size-3 text-primary" /> : null}
-                </button>
-              ))
-            )}
-          </PopoverContent>
-        </Popover>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button size="icon" variant="ghost" className="size-6" disabled={busy}>
-              <Calendar className="size-3" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="end">
-            <CalendarPicker
-              mode="single"
-              selected={due ?? undefined}
-              onSelect={(date) =>
-                void patch({ dueDate: date ? date.toISOString() : null })
-              }
-              locale={cs}
-            />
-          </PopoverContent>
-        </Popover>
-        <ConfirmDialog
-          trigger={
-            <Button
-              size="icon"
-              variant="ghost"
-              className="size-6"
-              disabled={busy}
-              aria-label="Smazat položku"
-            >
-              <Trash2 className="size-3" />
-            </Button>
-          }
-          title={`Smazat „${item.text}"?`}
-          destructive
-          confirmLabel="Smazat"
-          onConfirm={handleDelete}
+    <div className="group flex min-h-8 items-center gap-2 rounded-md px-1 hover:bg-muted/40">
+      <Checkbox checked={item.done} disabled={busy} onCheckedChange={(v) => void handleToggle(Boolean(v))} className="size-4 rounded" />
+      {editing ? (
+        <Input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onBlur={() => void handleTextSave()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") void handleTextSave();
+            if (e.key === "Escape") {
+              setText(item.text);
+              setEditing(false);
+            }
+          }}
+          autoFocus
+          className="h-7 text-[13px]"
+          disabled={busy}
         />
-      </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setEditing(true)}
+          className={`flex-1 truncate text-left text-[13px] ${item.done ? "text-muted-foreground line-through" : ""}`}
+        >
+          {item.text}
+        </button>
+      )}
+      {assignee ? (
+        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground" title={assignee.name ?? undefined}>
+          <UserAvatar user={assignee} className="size-4" />
+        </span>
+      ) : null}
+      {due ? <DueDateBadge due={due} completed={item.done} className="text-xs" /> : null}
+      <span className="opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-within:opacity-100 motion-reduce:transition-none [@media(pointer:coarse)]:opacity-100">
+        <ChecklistItemMenu item={item} boardMembers={boardMembers} onPatch={patch} onDelete={handleDelete} />
+      </span>
     </div>
   );
 }
