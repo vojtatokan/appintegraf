@@ -15,6 +15,7 @@ const SQL_PATHS = [
   join(root, "prisma", "migrations", "20260720_projekty_module.sql"),
   join(root, "prisma", "migrations", "20260721_projekty_personal_todo.sql"),
   join(root, "prisma", "migrations", "20260802_projekty_card_priority.sql"),
+  join(root, "prisma", "migrations", "20260903_projekty_simplify.sql"),
 ];
 
 function loadDatabaseUrl() {
@@ -48,8 +49,12 @@ function parseMysqlUrl(url) {
   }
 }
 
-function ignorableError(msg) {
-  const s = String(msg).toLowerCase();
+function ignorableError(err) {
+  // ER_DUP_FIELDNAME (1060) — sloupec/enum už existuje z předchozího běhu.
+  // ER_CANT_DROP_FIELD_OR_KEY (1091) — sloupec už byl smazán předchozím během.
+  if (err.errno === 1060 || err.errno === 1091) return true;
+  if (err.code === "ER_DUP_FIELDNAME" || err.code === "ER_CANT_DROP_FIELD_OR_KEY") return true;
+  const s = String(err.message).toLowerCase();
   return s.includes("already exists") || s.includes("duplicate");
 }
 
@@ -76,7 +81,7 @@ async function runSqlFile(conn, sqlPath) {
       await conn.query(stmt);
       console.log(`OK: ${preview}…`);
     } catch (e) {
-      if (ignorableError(e.message)) {
+      if (ignorableError(e)) {
         console.log(`Přeskočeno (už existuje): ${preview}…`);
       } else {
         console.error(`Chyba: ${e.message}`);

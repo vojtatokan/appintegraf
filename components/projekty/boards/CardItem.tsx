@@ -26,7 +26,6 @@ export type CardData = {
   dueDate: Date | string | null;
   startDate: Date | string | null;
   completed: boolean;
-  cover: string | null;
   archived: boolean;
   priority: CardPriorityValue | null;
   members: { userId: number; user: UserLite }[];
@@ -68,16 +67,6 @@ function CardItemBody({
 
   const content = (
     <div className="px-3 py-2">
-      {card.cover ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={card.cover}
-          alt=""
-          className="-mx-3 -mt-2 mb-2 h-[148px] w-[calc(100%+1.5rem)] rounded-t-lg object-cover"
-          draggable={false}
-        />
-      ) : null}
-
       <div className="flex items-start gap-1.5">
         {card.completed ? (
           <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden />

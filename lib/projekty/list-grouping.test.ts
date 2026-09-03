@@ -16,7 +16,6 @@ function card(id: string, overrides: Partial<CardData> = {}): CardData {
     dueDate: null,
     startDate: null,
     completed: false,
-    cover: null,
     archived: false,
     priority: null,
     members: [],

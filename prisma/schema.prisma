@@ -1929,6 +1929,11 @@ enum CardPriority {
   LOW
 }
 
+enum CardMemberRole {
+  OWNER
+  FOLLOWER
+}
+
 model Workspace {
   id        String   @id @default(cuid())
   name      String
@@ -2002,7 +2007,6 @@ model Card {
   dueDate     DateTime?
   startDate   DateTime?
   completed   Boolean   @default(false)
-  cover       String?
   archived    Boolean   @default(false)
   // NULL = bez priority. Záměrně bez defaultu — viz 20260802_projekty_card_priority.sql.
   priority    CardPriority?
@@ -2050,6 +2054,8 @@ model CardMember {
 
   // Kdy bylo přiřazení vytvořené — odznak „Nové" na stránce Moje práce.
   assignedAt DateTime @default(now())
+  // OWNER = odpovídá (jedna osoba), FOLLOWER = sleduje. UI ve vlně 7.
+  role CardMemberRole @default(FOLLOWER)
 
   card Card  @relation(fields: [cardId], references: [id], onDelete: Cascade)
   user users @relation(fields: [userId], references: [id], onDelete: Cascade)

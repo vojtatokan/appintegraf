@@ -11,7 +11,6 @@ export const CardUpdateSchema = z.object({
   dueDate: z.string().datetime().optional().nullable(),
   startDate: z.string().datetime().optional().nullable(),
   completed: z.boolean().optional(),
-  cover: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional().nullable(),
   archived: z.boolean().optional(),
   // null = odebrat prioritu (výchozí stav karty), undefined = neměnit.
   priority: z.enum(CARD_PRIORITIES).optional().nullable(),

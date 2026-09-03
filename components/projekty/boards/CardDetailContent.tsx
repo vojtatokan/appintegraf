@@ -27,7 +27,6 @@ export type FullCard = {
   dueDate: string | null;
   startDate: string | null;
   completed: boolean;
-  cover: string | null;
   archived: boolean;
   priority: CardPriorityValue | null;
   list: {
