@@ -58,3 +58,4 @@ next-env.d.ts
 !/backups/.gitkeep
 !/backups/README.md
 .worktrees/
+.superpowers/
