@@ -8,13 +8,14 @@ ALTER TABLE `projekty_card` DROP COLUMN `cover`;
 ALTER TABLE `projekty_card_member`
   ADD COLUMN `role` ENUM('OWNER', 'FOLLOWER') NOT NULL DEFAULT 'FOLLOWER';
 
--- Backfill: nejstarší přiřazení na kartě = OWNER. Opakované spuštění je no-op
--- (řádek, který už je OWNER, dostane znovu OWNER).
+-- Backfill: nejstarší přiřazení na kartě = OWNER. Jen pro karty bez OWNERa —
+-- neběží nad kartami, které už OWNER mají — chrání ruční změny z vlny 7.
 UPDATE `projekty_card_member` `m`
 JOIN (
   SELECT `cardId`, MIN(`assignedAt`) AS `firstAt`
   FROM `projekty_card_member`
   GROUP BY `cardId`
+  HAVING SUM(`role` = 'OWNER') = 0
 ) `f` ON `f`.`cardId` = `m`.`cardId` AND `f`.`firstAt` = `m`.`assignedAt`
 SET `m`.`role` = 'OWNER';
 
