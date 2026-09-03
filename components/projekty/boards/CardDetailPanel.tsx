@@ -153,10 +153,10 @@ export function CardDetailPanel({
       <SheetContent
         side="right"
         showCloseButton={false}
-        className="flex w-full flex-col gap-0 p-0 sm:max-w-xl"
+        className="flex w-full flex-col gap-0 p-0 sm:max-w-[460px]"
       >
         <div className="flex items-center justify-between gap-2 border-b border-border px-5 py-3">
-          <SheetTitle className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          <SheetTitle className="text-xs tracking-wider text-muted-foreground">
             {card?.number ?? "…"}
           </SheetTitle>
           <SheetDescription className="sr-only">Detail karty</SheetDescription>

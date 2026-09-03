@@ -50,7 +50,7 @@ export function CardLabelsPicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="ghost" size="sm" className="h-7 -ml-2 px-2 font-normal">
           <Tag className="mr-2 size-4" />
           Labely ({assignedLabelIds.length})
         </Button>

@@ -94,10 +94,6 @@ export function CardAttachmentsSection({
 
   return (
     <div className="space-y-3">
-      <h3 className="flex items-center gap-2 text-[13px] font-semibold tracking-tight text-foreground">
-        <Paperclip className="size-4" /> Přílohy ({items.length})
-      </h3>
-
       <div
         onDragOver={(e) => {
           e.preventDefault();

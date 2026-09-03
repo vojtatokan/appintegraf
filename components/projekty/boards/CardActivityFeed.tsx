@@ -90,9 +90,6 @@ export function CardActivityFeed({ cardId }: { cardId: string }) {
 
   return (
     <div className="space-y-2">
-      <h3 className="flex items-center gap-2 text-[13px] font-semibold tracking-tight text-foreground">
-        <Activity className="size-4" /> Aktivita
-      </h3>
       <ol className="space-y-1.5 border-l-2 border-muted pl-3">
         {entries.map((e) => (
           <li key={e.id} className="text-xs">

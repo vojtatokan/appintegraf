@@ -1,19 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Button } from "@/components/projekty/ui/button";
-import { Input } from "@/components/projekty/ui/input";
-import { Checkbox } from "@/components/projekty/ui/checkbox";
 import { Archive } from "lucide-react";
-import { CardDueDatePicker } from "./CardDueDatePicker";
-import { CardPriorityPicker } from "./CardPriorityPicker";
 import { CardDescriptionEditor } from "./CardDescriptionEditor";
-import { CardMembersPicker } from "./CardMembersPicker";
-import { CardLabelsPicker } from "./CardLabelsPicker";
 import { CardChecklistSection, type Checklist } from "./CardChecklistSection";
 import { CardCommentsSection } from "./CardCommentsSection";
-import { CardAttachmentsSection } from "./CardAttachmentsSection";
-import { CardActivityFeed } from "./CardActivityFeed";
+import { CardDetailHeader } from "./CardDetailHeader";
+import { CardDetailMore } from "./CardDetailMore";
 import type { CardPriorityValue } from "@/lib/projekty/priority";
 
 type UserLite = { id: number; email: string | null; name: string | null; image: string | null };
@@ -61,101 +54,14 @@ export function CardDetailContent({
   onCardChange: (updater: (prev: FullCard) => FullCard) => void;
   onArchive: () => void;
 }) {
-  const [title, setTitle] = useState(card.title);
-  const [savingTitle, setSavingTitle] = useState(false);
-
-  // Reset draftu titulku jen při přepnutí karty (ne při každém refresh merge)
-  useEffect(() => {
-    setTitle(card.title);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [card.id]);
-
-  async function handleTitleBlur() {
-    if (title.trim() === card.title || !title.trim()) {
-      setTitle(card.title);
-      return;
-    }
-    setSavingTitle(true);
-    await onPatch({ title: title.trim() });
-    setSavingTitle(false);
-  }
-
   const boardMembersForPicker = card.list.board.members.map((m) => m.user);
-  const assignedUserIds = card.members.map((m) => m.userId);
-  const boardLabels = card.list.board.labels;
-  const assignedLabelIds = card.labels.map((l) => l.labelId);
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-1.5">
-        <Input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          onBlur={() => void handleTitleBlur()}
-          disabled={savingTitle}
-          className="text-lg font-semibold"
-        />
-        <p className="text-xs text-muted-foreground">v sloupci „{card.list.name}&ldquo;</p>
-      </div>
+    <div className="space-y-5">
+      <CardDetailHeader card={card} onPatch={onPatch} onCardChange={onCardChange} />
 
-      <div className="flex flex-wrap items-center gap-2">
-        <label className="flex items-center gap-2">
-          <Checkbox
-            checked={card.completed}
-            onCheckedChange={(v) => void onPatch({ completed: Boolean(v) })}
-          />
-          <span className="text-sm">Dokončeno</span>
-        </label>
-
-        <CardDueDatePicker
-          value={card.dueDate ? new Date(card.dueDate) : null}
-          completed={card.completed}
-          onChange={(date) => void onPatch({ dueDate: date ? date.toISOString() : null })}
-        />
-
-        <CardPriorityPicker
-          value={card.priority}
-          onChange={(priority) => void onPatch({ priority })}
-        />
-
-        <CardMembersPicker
-          cardId={card.id}
-          assignedUserIds={assignedUserIds}
-          boardMembers={boardMembersForPicker}
-          onChange={(newIds) => {
-            onCardChange((prev) => ({
-              ...prev,
-              members: newIds.flatMap((uid) => {
-                const existing = prev.members.find((m) => m.userId === uid);
-                if (existing) return [existing];
-                const user = boardMembersForPicker.find((u) => u.id === uid);
-                return user ? [{ userId: uid, user }] : [];
-              }),
-            }));
-          }}
-        />
-
-        <CardLabelsPicker
-          cardId={card.id}
-          assignedLabelIds={assignedLabelIds}
-          boardLabels={boardLabels}
-          onChange={(newIds) => {
-            onCardChange((prev) => ({
-              ...prev,
-              labels: newIds.flatMap((lid) => {
-                const existing = prev.labels.find((l) => l.labelId === lid);
-                if (existing) return [existing];
-                const label = boardLabels.find((l) => l.id === lid);
-                return label ? [{ labelId: lid, label }] : [];
-              }),
-            }));
-          }}
-        />
-      </div>
-
-      {/* Description */}
-      <section className="rounded-lg border bg-card p-4">
-        <h3 className="mb-3 text-[13px] font-semibold tracking-tight">Popis</h3>
+      <section>
+        <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Popis</h3>
         <CardDescriptionEditor
           value={card.description ?? ""}
           onSave={async (newValue) => {
@@ -165,34 +71,20 @@ export function CardDetailContent({
         />
       </section>
 
-      {/* Checklists */}
-      <section className="rounded-lg border bg-card p-4">
-        <CardChecklistSection
-          cardId={card.id}
-          checklists={card.checklists ?? []}
-          boardMembers={boardMembersForPicker}
-        />
+      <section>
+        <CardChecklistSection cardId={card.id} checklists={card.checklists ?? []} boardMembers={boardMembersForPicker} />
       </section>
 
-      {/* Comments */}
-      <section className="rounded-lg border bg-card p-4">
+      <section>
+        <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Komentáře</h3>
         <CardCommentsSection cardId={card.id} currentUserId={currentUserId} />
       </section>
 
-      {/* Attachments */}
-      <section className="rounded-lg border bg-card p-4">
-        <CardAttachmentsSection cardId={card.id} currentUserId={currentUserId} />
-      </section>
+      <CardDetailMore card={card} currentUserId={currentUserId} onPatch={onPatch} onCardChange={onCardChange} />
 
-      {/* Activity */}
-      <section className="rounded-lg border bg-card p-4">
-        <CardActivityFeed cardId={card.id} />
-      </section>
-
-      <div className="flex justify-end pt-4">
-        <Button variant="outline" size="sm" onClick={onArchive}>
-          <Archive className="mr-2 size-4" />
-          Archivovat kartu
+      <div className="flex items-center justify-end pt-2 text-xs text-muted-foreground">
+        <Button variant="ghost" size="sm" onClick={onArchive}>
+          <Archive className="size-3.5" /> Archivovat
         </Button>
       </div>
     </div>

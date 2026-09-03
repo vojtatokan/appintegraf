@@ -54,7 +54,7 @@ export function CardMembersPicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="ghost" size="sm" className="h-7 -ml-2 px-2 font-normal">
           <Users className="mr-2 size-4" />
           Členové ({assignedUserIds.length})
         </Button>

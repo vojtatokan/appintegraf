@@ -91,10 +91,6 @@ export function CardCommentsSection({
 
   return (
     <div className="space-y-3">
-      <h3 className="flex items-center gap-2 text-[13px] font-semibold tracking-tight text-foreground">
-        <MessageSquare className="size-4" /> Komentáře ({notes.length})
-      </h3>
-
       <div className="space-y-2">
         <Textarea
           value={draft}

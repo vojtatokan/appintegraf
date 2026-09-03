@@ -35,7 +35,7 @@ export function CardPriorityPicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" disabled={disabled}>
+        <Button variant="ghost" size="sm" disabled={disabled} className="h-7 -ml-2 px-2 font-normal">
           {value ? (
             <span
               className={cn("mr-2 size-2 rounded-full", PRIORITY_DOT_CLASSES[value])}

@@ -28,16 +28,18 @@ export function CardDueDatePicker({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            variant="outline"
+            variant="ghost"
             size="sm"
             disabled={disabled}
             className={cn(
+              "h-7 -ml-2 px-2 font-normal",
               status === "overdue" && "text-rose-700 dark:text-rose-400",
               status === "today" && "text-amber-700 dark:text-amber-400",
+              !value && "text-muted-foreground",
             )}
           >
             <CalendarIcon className="mr-2 size-4" />
-            {value ? formatDue(value, "withYear") : "Termín"}
+            {value ? formatDue(value, "withYear") : "Přidat termín"}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
