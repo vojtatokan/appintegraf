@@ -29,6 +29,8 @@ export function BoardListColumn({
   onListDelete,
   onListArchive,
   onCardCreated,
+  quickAddOpen: quickAddOpenProp,
+  onQuickAddOpenChange,
 }: {
   list: ListData;
   orderedCardIds: string[];
@@ -36,10 +38,18 @@ export function BoardListColumn({
   onListDelete: (id: string) => void;
   onListArchive?: (id: string, archived: boolean) => void;
   onCardCreated?: (listId: string, card: CardData) => void;
+  /** Řízený stav quick-add řádku zvenčí (BoardToolbar „Nová karta"); bez prop = lokální stav. */
+  quickAddOpen?: boolean;
+  onQuickAddOpenChange?: (open: boolean) => void;
 }) {
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(list.name);
-  const [quickAddOpen, setQuickAddOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const quickAddOpen = quickAddOpenProp ?? internalOpen;
+  function setQuickAddOpen(next: boolean) {
+    setInternalOpen(next);
+    onQuickAddOpenChange?.(next);
+  }
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: list.id,
     data: { type: "list" },

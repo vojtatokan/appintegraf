@@ -1,5 +1,5 @@
 import { getDueStatus, startOfLocalDay } from "./due-date";
-import { isCardPriority, type CardPriorityValue } from "./priority";
+import { isCardPriority, PRIORITY_LABELS, type CardPriorityValue } from "./priority";
 
 export type CardFilters = {
   q?: string;
@@ -95,4 +95,50 @@ export function matchesFilters(
     }
   }
   return true;
+}
+
+export function countActiveFilters(f: CardFilters): number {
+  let n = 0;
+  if (f.q) n++;
+  if (f.memberIds?.length) n++;
+  if (f.labelIds?.length) n++;
+  if (f.priorities?.length) n++;
+  if (f.dueRange) n++;
+  if (f.completed === "false" || f.completed === "true") n++;
+  return n;
+}
+
+export type FilterChip = { key: string; label: string; clear: Partial<CardFilters> };
+
+const DUE_LABELS: Record<NonNullable<CardFilters["dueRange"]>, string> = {
+  overdue: "Po termínu",
+  today: "Dnes",
+  week: "Tento týden",
+  none: "Bez termínu",
+};
+
+export function filterChips(
+  f: CardFilters,
+  ctx: {
+    members: { id: number; name: string | null; email: string | null }[];
+    labels: { id: string; name: string }[];
+  },
+): FilterChip[] {
+  const chips: FilterChip[] = [];
+  if (f.q) chips.push({ key: "q", label: `„${f.q}“`, clear: { q: undefined } });
+  for (const id of f.memberIds ?? []) {
+    const u = ctx.members.find((m) => String(m.id) === id);
+    chips.push({ key: `m:${id}`, label: u?.name ?? u?.email ?? "?", clear: { memberIds: undefined } });
+  }
+  for (const id of f.labelIds ?? []) {
+    const l = ctx.labels.find((x) => x.id === id);
+    chips.push({ key: `l:${id}`, label: l?.name ?? "?", clear: { labelIds: undefined } });
+  }
+  for (const p of f.priorities ?? []) {
+    chips.push({ key: `p:${p}`, label: p === "none" ? "Bez priority" : PRIORITY_LABELS[p], clear: { priorities: undefined } });
+  }
+  if (f.dueRange) chips.push({ key: "due", label: DUE_LABELS[f.dueRange], clear: { dueRange: undefined } });
+  if (f.completed === "false") chips.push({ key: "done", label: "Bez hotových", clear: { completed: "any" } });
+  if (f.completed === "true") chips.push({ key: "done", label: "Jen hotové", clear: { completed: "any" } });
+  return chips;
 }

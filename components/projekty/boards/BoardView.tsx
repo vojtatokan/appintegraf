@@ -1,21 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Settings } from "lucide-react";
 import { toast } from "sonner";
 import { type ListData } from "./BoardListColumn";
 import { CardDetailPanel } from "./CardDetailPanel";
-import { BoardCardFilterBar } from "./BoardCardFilterBar";
+import { BoardToolbar } from "./BoardToolbar";
+import { BoardFilterChips } from "./BoardFilterChips";
 import { KanbanBoard } from "./KanbanBoard";
 import { matchesFilters, parseCardFilters } from "@/lib/projekty/card-filters";
-import { BoardViewTabs } from "./BoardViewTabs";
 import { parseBoardView } from "@/lib/projekty/board-view";
 import { BoardListView } from "./BoardListView";
 import { BoardCalendarView } from "./BoardCalendarView";
 import { BulkSelectionProvider, useBulkSelection } from "./BulkSelectionContext";
 import { BulkActionBar } from "./BulkActionBar";
+import { boardStats } from "@/lib/projekty/board-stats";
 
 type UserLite = { id: number; email: string | null; name: string | null; image: string | null };
 type BoardLabel = { id: string; name: string; color: string };
@@ -84,6 +83,23 @@ function BoardViewInner({ board, currentUserId, lists, setLists }: BoardViewInne
     cards: l.cards.filter((c) => matchesFilters(c, filters)),
   }));
 
+  const [quickAddListId, setQuickAddListId] = useState<string | null>(null);
+
+  function handleNewCard() {
+    const first = lists[0];
+    if (!first) {
+      toast.info("Nejdřív přidej sloupec.");
+      return;
+    }
+    const view = parseBoardView(searchParams);
+    if (view !== "kanban") {
+      const sp = new URLSearchParams(searchParams.toString());
+      sp.delete("view");
+      router.replace(`${pathname}${sp.toString() ? `?${sp.toString()}` : ""}`);
+    }
+    setQuickAddListId(first.id);
+  }
+
   function closeCardModal() {
     const sp = new URLSearchParams(searchParams.toString());
     sp.delete("card");
@@ -113,29 +129,15 @@ function BoardViewInner({ board, currentUserId, lists, setLists }: BoardViewInne
         className="-m-4 flex h-[calc(100dvh-3rem)] flex-col bg-background md:-m-6"
         onClick={handleBoardClick}
       >
-        <header className="flex items-center justify-between gap-3 border-b border-border bg-background px-4 py-3">
-          <div className="flex min-w-0 items-center gap-2.5">
-            <span
-              className="size-2.5 shrink-0 rounded-full"
-              style={{ backgroundColor: board.background ?? "#64748b" }}
-              aria-hidden
-            />
-            <h1 className="truncate text-lg font-semibold tracking-tight text-foreground">
-              {board.name}
-            </h1>
-          </div>
-          <Link
-            href={`/projekty/boards/${board.id}/settings`}
-            className="flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          >
-            <Settings className="size-4" />
-            <span className="hidden sm:inline">Nastavení</span>
-          </Link>
-        </header>
-
-        <BoardViewTabs />
-
-        <BoardCardFilterBar members={allMembers} labels={board.labels} />
+        <BoardToolbar
+          board={board}
+          stats={boardStats(lists)}
+          members={allMembers}
+          labels={board.labels}
+          onNewCard={handleNewCard}
+          onArchiveBoard={() => router.push(`/projekty/boards/${board.id}/settings`)}
+        />
+        <BoardFilterChips members={allMembers} labels={board.labels} />
 
         {(() => {
           const view = parseBoardView(searchParams);
@@ -165,6 +167,8 @@ function BoardViewInner({ board, currentUserId, lists, setLists }: BoardViewInne
                   lists={lists}
                   setLists={setLists}
                   displayedLists={displayedLists}
+                  quickAddListId={quickAddListId}
+                  onQuickAddHandled={() => setQuickAddListId(null)}
                 />
               );
           }

@@ -29,11 +29,16 @@ export function KanbanBoard({
   lists,
   setLists,
   displayedLists,
+  quickAddListId,
+  onQuickAddHandled,
 }: {
   boardId: string;
   lists: ListData[];
   setLists: React.Dispatch<React.SetStateAction<ListData[]>>;
   displayedLists: ListData[];
+  /** Sloupec, ve kterém má být otevřený quick-add řádek (řízeno z BoardToolbar „Nová karta"). */
+  quickAddListId?: string | null;
+  onQuickAddHandled?: () => void;
 }) {
   const [activeCard, setActiveCard] = useState<CardData | null>(null);
   const [activeList, setActiveList] = useState<ListData | null>(null);
@@ -310,6 +315,8 @@ export function KanbanBoard({
         boardId={boardId}
         lists={displayedLists}
         orderedCardIds={orderedCardIds}
+        quickAddListId={quickAddListId}
+        onQuickAddHandled={onQuickAddHandled}
         onListUpdate={(updated) =>
           setLists((prev) =>
             prev.map((l) => (l.id === updated.id ? { ...l, ...updated } : l)),
@@ -357,6 +364,8 @@ function ColumnsList({
   onListArchive,
   onCardCreated,
   onListCreated,
+  quickAddListId,
+  onQuickAddHandled,
 }: {
   boardId: string;
   lists: ListData[];
@@ -366,6 +375,8 @@ function ColumnsList({
   onListArchive: (id: string, archived: boolean) => void;
   onCardCreated: (listId: string, card: CardData) => void;
   onListCreated: (list: Omit<ListData, "cards">) => void;
+  quickAddListId?: string | null;
+  onQuickAddHandled?: () => void;
 }) {
   const { active, over } = useDndContext();
   const draggingListId =
@@ -404,6 +415,10 @@ function ColumnsList({
                   onListDelete={onListDelete}
                   onListArchive={onListArchive}
                   onCardCreated={onCardCreated}
+                  quickAddOpen={quickAddListId != null ? list.id === quickAddListId : undefined}
+                  onQuickAddOpenChange={(open) => {
+                    if (!open && list.id === quickAddListId) onQuickAddHandled?.();
+                  }}
                 />
                 {showLineAfter ? <DropLine orientation="vertical" /> : null}
               </Fragment>

@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { matchesFilters, parseCardFilters, serializeCardFilters } from "./card-filters";
+import {
+  countActiveFilters,
+  filterChips,
+  matchesFilters,
+  parseCardFilters,
+  serializeCardFilters,
+  type CardFilters,
+} from "./card-filters";
 
 // Regresní síť před refaktorem dueRange na lib/projekty/due-date.ts —
 // zachycuje stávající sémantiku filtrů (pozor: filtr "today"/"week" completed
@@ -112,5 +119,44 @@ describe("parse/serialize priority", () => {
     expect(parseCardFilters(new URLSearchParams("priority=urgent")).priorities).toBeUndefined();
     expect(parseCardFilters(new URLSearchParams("priority=X,HIGH")).priorities).toEqual(["HIGH"]);
     expect(parseCardFilters(new URLSearchParams()).priorities).toBeUndefined();
+  });
+});
+
+const none: CardFilters = { completed: "any" };
+
+describe("countActiveFilters", () => {
+  it("bez filtrů = 0", () => {
+    expect(countActiveFilters(none)).toBe(0);
+  });
+  it("každý druh filtru počítá 1", () => {
+    expect(
+      countActiveFilters({
+        q: "abc",
+        memberIds: ["1", "2"],
+        labelIds: ["l1"],
+        priorities: ["URGENT"],
+        dueRange: "today",
+        completed: "false",
+      }),
+    ).toBe(6);
+  });
+});
+
+describe("filterChips", () => {
+  const ctx = {
+    members: [{ id: 1, email: null, name: "Vojta", image: null }],
+    labels: [{ id: "l1", name: "Finance", color: "#111" }],
+  };
+  it("vrátí chip za člena, štítek, termín a hotové s clear patchem", () => {
+    const chips = filterChips(
+      { memberIds: ["1"], labelIds: ["l1"], dueRange: "overdue", completed: "false" },
+      ctx,
+    );
+    expect(chips.map((c) => c.label)).toEqual(["Vojta", "Finance", "Po termínu", "Bez hotových"]);
+    expect(chips[0].clear).toEqual({ memberIds: undefined });
+    expect(chips[3].clear).toEqual({ completed: "any" });
+  });
+  it("neznámé id člena zobrazí jako „?“", () => {
+    expect(filterChips({ memberIds: ["99"], completed: "any" }, ctx)[0].label).toBe("?");
   });
 });
