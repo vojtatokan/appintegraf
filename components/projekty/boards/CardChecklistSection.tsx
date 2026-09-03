@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/projekty/ui/button";
 import { ConfirmDialog } from "@/components/projekty/ui/confirm-dialog";
 import { Input } from "@/components/projekty/ui/input";
@@ -32,22 +32,38 @@ export function CardChecklistSection({
   const [checklists, setChecklists] = useState<Checklist[]>(initial);
   const [addingTitle, setAddingTitle] = useState(false);
   const [newTitle, setNewTitle] = useState("");
+  const [creatingFirst, setCreatingFirst] = useState(false);
+  const ensureChecklistRef = useRef<Promise<Checklist | null> | null>(null);
 
+  /**
+   * Vytvoří první checklist při přidání první položky (D12). In-flight guard přes ref — bez něj
+   * by dva rychlé Entery před doběhnutím prvního POSTu (stale `checklists[0]` v closure) založily
+   * dva „Checklist“ seznamy. Druhé a další volání, dokud první běží, dostane stejný promise.
+   */
   async function ensureChecklist(): Promise<Checklist | null> {
     if (checklists[0]) return checklists[0];
-    const res = await fetch(`/api/projekty/cards/${cardId}/checklists`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ name: "Checklist" }),
-    });
-    if (!res.ok) {
-      toast.error("Vytvoření checklistu selhalo.");
-      return null;
+    if (ensureChecklistRef.current) return ensureChecklistRef.current;
+    const promise = (async () => {
+      const res = await fetch(`/api/projekty/cards/${cardId}/checklists`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name: "Checklist" }),
+      });
+      if (!res.ok) {
+        toast.error("Vytvoření checklistu selhalo.");
+        return null;
+      }
+      const { checklist } = (await res.json()) as { checklist: Checklist };
+      const created = { ...checklist, items: checklist.items ?? [] };
+      setChecklists((prev) => (prev[0] ? prev : [...prev, created]));
+      return created;
+    })();
+    ensureChecklistRef.current = promise;
+    try {
+      return await promise;
+    } finally {
+      ensureChecklistRef.current = null;
     }
-    const { checklist } = (await res.json()) as { checklist: Checklist };
-    const created = { ...checklist, items: checklist.items ?? [] };
-    setChecklists((prev) => [...prev, created]);
-    return created;
   }
 
   async function handleAddChecklist() {
@@ -158,9 +174,15 @@ export function CardChecklistSection({
       {checklists.length === 0 ? (
         <ChecklistItemAddInline
           checklistId={null}
+          busy={creatingFirst}
           onAdd={async (_id, text) => {
-            const cl = await ensureChecklist();
-            if (cl) await handleAddItem(cl.id, text);
+            setCreatingFirst(true);
+            try {
+              const cl = await ensureChecklist();
+              if (cl) await handleAddItem(cl.id, text);
+            } finally {
+              setCreatingFirst(false);
+            }
           }}
         />
       ) : null}

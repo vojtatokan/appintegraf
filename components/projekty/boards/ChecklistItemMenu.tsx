@@ -13,13 +13,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/projekty/ui/dropdown-menu";
-import { Popover, PopoverContent } from "@/components/projekty/ui/popover";
+import { Popover, PopoverAnchor, PopoverContent } from "@/components/projekty/ui/popover";
 import { UserAvatar } from "@/components/projekty/UserAvatar";
 import type { ChecklistItem } from "./ChecklistItemRow";
 
 type UserLite = { id: number; email: string | null; name: string | null; image: string | null };
 
-/** ⋯ menu položky checklistu (D12): Přiřadit osobu · Termín · Smazat. Max 5 položek (C8). */
+/**
+ * ⋯ menu položky checklistu (D12): Přiřadit osobu · Termín · Smazat. Max 5 položek (C8).
+ *
+ * Jeden `Popover` kotvený přes `PopoverAnchor` na wrapper kolem ⋯ tlačítka (`DropdownMenu`) —
+ * `PopoverContent` uvnitř nemá vlastní `PopoverTrigger`, takže bez explicitního anchoru by se
+ * ukotvil na `null` a picker by se vykreslil na náhodné pozici. Obsah pickeru se přepíná podle
+ * `sub`, takže je vždy jen jeden `PopoverContent` (žádné vnořené `Popover` root komponenty).
+ */
 export function ChecklistItemMenu({
   item,
   boardMembers,
@@ -34,31 +41,35 @@ export function ChecklistItemMenu({
   const [sub, setSub] = useState<"who" | "when" | null>(null);
 
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button size="icon-xs" variant="ghost" aria-label="Akce položky" className="text-muted-foreground">
-            <MoreHorizontal className="size-3.5" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-48">
-          <DropdownMenuItem onSelect={() => setSub("who")}><UserIcon className="size-4" /> Přiřadit osobu</DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => setSub("when")}><Calendar className="size-4" /> Termín položky</DropdownMenuItem>
-          {item.assigneeId || item.dueDate ? (
-            <DropdownMenuItem onSelect={() => void onPatch({ assigneeId: null, dueDate: null })}><X className="size-4" /> Odebrat osobu a termín</DropdownMenuItem>
-          ) : null}
-          <DropdownMenuSeparator />
-          <ConfirmDialog
-            trigger={<DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-700 focus:text-red-700 dark:text-red-400"><Trash2 className="size-4" /> Smazat</DropdownMenuItem>}
-            title={`Smazat „${item.text}“?`}
-            destructive
-            confirmLabel="Smazat"
-            onConfirm={onDelete}
-          />
-        </DropdownMenuContent>
-      </DropdownMenu>
+    <Popover open={sub !== null} onOpenChange={(o) => !o && setSub(null)}>
+      <PopoverAnchor asChild>
+        <span className="inline-flex">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="icon-xs" variant="ghost" aria-label="Akce položky" className="text-muted-foreground">
+                <MoreHorizontal className="size-3.5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onSelect={() => setSub("who")}><UserIcon className="size-4" /> Přiřadit osobu</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setSub("when")}><Calendar className="size-4" /> Termín položky</DropdownMenuItem>
+              {item.assigneeId || item.dueDate ? (
+                <DropdownMenuItem onSelect={() => void onPatch({ assigneeId: null, dueDate: null })}><X className="size-4" /> Odebrat osobu a termín</DropdownMenuItem>
+              ) : null}
+              <DropdownMenuSeparator />
+              <ConfirmDialog
+                trigger={<DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-700 focus:text-red-700 dark:text-red-400"><Trash2 className="size-4" /> Smazat</DropdownMenuItem>}
+                title={`Smazat „${item.text}“?`}
+                destructive
+                confirmLabel="Smazat"
+                onConfirm={onDelete}
+              />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </span>
+      </PopoverAnchor>
 
-      <Popover open={sub === "who"} onOpenChange={(o) => !o && setSub(null)}>
+      {sub === "who" ? (
         <PopoverContent className="w-56 p-1" align="end">
           {boardMembers.map((u) => (
             <button
@@ -75,9 +86,9 @@ export function ChecklistItemMenu({
             </button>
           ))}
         </PopoverContent>
-      </Popover>
+      ) : null}
 
-      <Popover open={sub === "when"} onOpenChange={(o) => !o && setSub(null)}>
+      {sub === "when" ? (
         <PopoverContent className="w-auto p-0" align="end">
           <CalendarPicker
             mode="single"
@@ -89,7 +100,7 @@ export function ChecklistItemMenu({
             locale={cs}
           />
         </PopoverContent>
-      </Popover>
-    </>
+      ) : null}
+    </Popover>
   );
 }

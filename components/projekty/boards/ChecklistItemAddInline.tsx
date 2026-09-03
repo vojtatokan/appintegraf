@@ -5,18 +5,25 @@ import { Button } from "@/components/projekty/ui/button";
 import { Input } from "@/components/projekty/ui/input";
 import { Plus } from "lucide-react";
 
-/** Inline „Přidat položku“ řádek pod checklistem. `checklistId=null` = ještě neexistuje první checklist (D12). */
+/**
+ * Inline „Přidat položku“ řádek pod checklistem. `checklistId=null` = ještě neexistuje první
+ * checklist (D12). `busy` (volitelný) — volající řídí, když `onAdd` právě čeká na server (typicky
+ * první checklist se teprve vytváří) — vstup se zablokuje, ale řádek zůstává otevřený.
+ */
 export function ChecklistItemAddInline({
   checklistId,
   onAdd,
+  busy = false,
 }: {
   checklistId: string | null;
   onAdd: (checklistId: string | null, text: string) => void | Promise<void>;
+  busy?: boolean;
 }) {
   const [active, setActive] = useState(false);
   const [text, setText] = useState("");
 
   async function handleAdd() {
+    if (busy) return;
     const trimmed = text.trim();
     if (!trimmed) {
       setActive(false);
@@ -53,9 +60,10 @@ export function ChecklistItemAddInline({
         }}
         placeholder="Položka…"
         autoFocus
+        disabled={busy}
         className="h-7 text-[13px]"
       />
-      <Button size="sm" onClick={() => void handleAdd()}>
+      <Button size="sm" onClick={() => void handleAdd()} disabled={busy}>
         Přidat
       </Button>
     </div>
