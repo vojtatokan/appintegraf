@@ -4,9 +4,9 @@ import { useCallback, useEffect, useState } from "react";
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
 import { Activity } from "lucide-react";
-import { EmptyState } from "@/components/projekty/ui/empty-state";
-import { Skeleton } from "@/components/projekty/ui/skeleton";
-import { Button } from "@/components/projekty/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 
 type AuditEntry = {
   id: string;

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Link as LinkIcon, Check, X } from "lucide-react";
 import type { Editor } from "@tiptap/react";
-import { Button } from "@/components/projekty/ui/button";
-import { Input } from "@/components/projekty/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export function LinkPopover({ editor }: { editor: Editor }) {
   const [open, setOpen] = useState(false);

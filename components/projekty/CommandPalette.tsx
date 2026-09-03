@@ -21,7 +21,7 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/components/projekty/ui/command";
+} from "@/components/ui/command";
 import { useQuickCapture } from "@/components/projekty/todos/QuickCaptureProvider";
 import { useIsTouchDevice } from "@/hooks/projekty/useIsTouchDevice";
 import { useIsMac } from "@/hooks/projekty/useIsMac";

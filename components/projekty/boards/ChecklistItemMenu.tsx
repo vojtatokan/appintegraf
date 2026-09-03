@@ -3,17 +3,17 @@
 import { useState } from "react";
 import { Calendar, MoreHorizontal, Trash2, User as UserIcon, X } from "lucide-react";
 import { cs } from "date-fns/locale";
-import { Button } from "@/components/projekty/ui/button";
-import { Calendar as CalendarPicker } from "@/components/projekty/ui/calendar";
-import { ConfirmDialog } from "@/components/projekty/ui/confirm-dialog";
+import { Button } from "@/components/ui/button";
+import { Calendar as CalendarPicker } from "@/components/ui/calendar";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/projekty/ui/dropdown-menu";
-import { Popover, PopoverAnchor, PopoverContent } from "@/components/projekty/ui/popover";
+} from "@/components/ui/dropdown-menu";
+import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover";
 import { UserAvatar } from "@/components/projekty/UserAvatar";
 import type { ChecklistItem } from "./ChecklistItemRow";
 

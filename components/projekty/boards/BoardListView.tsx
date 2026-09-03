@@ -16,11 +16,11 @@ import {
 } from "@dnd-kit/sortable";
 import { SearchX } from "lucide-react";
 import { type ListData } from "./BoardListColumn";
-import { EmptyState } from "@/components/projekty/ui/empty-state";
+import { EmptyState } from "@/components/ui/empty-state";
 import { ListGroupHeader } from "./ListGroupHeader";
 import { ListCardRow } from "./ListCardRow";
 import { DropLine } from "./DropLine";
-import { Button } from "@/components/projekty/ui/button";
+import { Button } from "@/components/ui/button";
 import { type CardData } from "./CardItem";
 import { useResponsiveSensors } from "@/lib/projekty/dnd-sensors";
 import { useOptimisticListsMutation } from "@/hooks/projekty/useOptimisticListsMutation";

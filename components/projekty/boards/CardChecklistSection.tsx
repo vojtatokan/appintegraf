@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Button } from "@/components/projekty/ui/button";
-import { ConfirmDialog } from "@/components/projekty/ui/confirm-dialog";
-import { Input } from "@/components/projekty/ui/input";
+import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { Input } from "@/components/ui/input";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { canAddAnotherChecklist, summarizeChecklists } from "@/lib/projekty/checklist-summary";

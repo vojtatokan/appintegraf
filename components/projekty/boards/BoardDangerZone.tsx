@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/projekty/ui/button";
-import { ConfirmDialog } from "@/components/projekty/ui/confirm-dialog";
+import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 

@@ -9,7 +9,7 @@ import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import { Bold, Italic, ImagePlus, List, ListChecks } from "lucide-react";
 import { useRef } from "react";
-import { Button } from "@/components/projekty/ui/button";
+import { Button } from "@/components/ui/button";
 import { LinkPopover } from "./LinkPopover";
 import { Callout } from "./extensions/Callout";
 import { Toggle, ToggleSummary, ToggleBody } from "./extensions/Toggle";

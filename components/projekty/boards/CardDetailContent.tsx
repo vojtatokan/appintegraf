@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/projekty/ui/button";
+import { Button } from "@/components/ui/button";
 import { Archive } from "lucide-react";
 import { CardDescriptionEditor } from "./CardDescriptionEditor";
 import { CardChecklistSection, type Checklist } from "./CardChecklistSection";

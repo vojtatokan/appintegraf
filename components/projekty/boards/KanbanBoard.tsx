@@ -17,7 +17,7 @@ import {
   type ListData,
 } from "./BoardListColumn";
 import { BoardListAddInline } from "./BoardListAddInline";
-import { EmptyState } from "@/components/projekty/ui/empty-state";
+import { EmptyState } from "@/components/ui/empty-state";
 import { CardItemDragOverlay, type CardData } from "./CardItem";
 import { DropLine } from "./DropLine";
 import { useBulkSelection } from "./BulkSelectionContext";

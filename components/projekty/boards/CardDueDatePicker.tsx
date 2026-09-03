@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar } from "@/components/projekty/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
-import { Button } from "@/components/projekty/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 import { Calendar as CalendarIcon, X } from "lucide-react";
 import { cs } from "date-fns/locale";
 import { cn } from "@/lib/projekty/utils";

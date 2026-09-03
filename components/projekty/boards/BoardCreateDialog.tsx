@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ResponsiveDialog } from "@/components/projekty/ui/responsive-dialog";
-import { Button } from "@/components/projekty/ui/button";
-import { Input } from "@/components/projekty/ui/input";
-import { Label } from "@/components/projekty/ui/label";
-import { Textarea } from "@/components/projekty/ui/textarea";
+import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
 const PRESET_COLORS = [

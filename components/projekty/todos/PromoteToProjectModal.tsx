@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import type { PersonalTodo } from "@prisma/client";
 import { toast } from "sonner";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/projekty/ui/dialog";
-import { Button } from "@/components/projekty/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/projekty/utils";
 import type { BoardLite } from "@/components/projekty/todos/types";
 

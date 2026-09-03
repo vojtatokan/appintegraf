@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/projekty/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function BoardsLoading() {
   return (

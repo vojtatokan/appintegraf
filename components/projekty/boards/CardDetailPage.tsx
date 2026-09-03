@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ChevronLeft, Link2 } from "lucide-react";
-import { Button } from "@/components/projekty/ui/button";
+import { Button } from "@/components/ui/button";
 import { CardDetailContent, type FullCard } from "./CardDetailContent";
 
 /**

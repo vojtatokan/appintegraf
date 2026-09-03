@@ -1,4 +1,4 @@
-import { Skeleton } from "@/components/projekty/ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Geometrie zrcadlí MyWorkView: hlavička, taby, dvě sekce s řádky.
 export default function MyWorkLoading() {

@@ -8,16 +8,16 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/projekty/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
+} from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/projekty/ui/dropdown-menu";
-import { Button } from "@/components/projekty/ui/button";
-import { ConfirmDialog } from "@/components/projekty/ui/confirm-dialog";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { UserAvatar } from "@/components/projekty/UserAvatar";
 import { Trash2, Plus, Crown } from "lucide-react";
 import { toast } from "sonner";

@@ -4,7 +4,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
-import { Button } from "@/components/projekty/ui/button";
+import { Button } from "@/components/ui/button";
 import { formatCalendarMonth, parseCalendarMonth } from "@/lib/projekty/board-view";
 
 export function CalendarHeader() {

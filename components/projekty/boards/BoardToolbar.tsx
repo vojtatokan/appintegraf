@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Archive, ArrowLeft, CalendarDays, Columns, List as ListIcon, MoreHorizontal, Plus, Settings } from "lucide-react";
-import { Button } from "@/components/projekty/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/projekty/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { boardViewQuery, parseBoardView, type BoardViewType } from "@/lib/projekty/board-view";
 import type { BoardStats } from "@/lib/projekty/board-stats";
 import { cn } from "@/lib/projekty/utils";

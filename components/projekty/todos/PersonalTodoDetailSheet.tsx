@@ -15,7 +15,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/projekty/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { TiptapEditor } from "@/components/projekty/editor/TiptapEditor";
 import { toast } from "sonner";
 import { cs } from "date-fns/locale";
@@ -27,10 +27,10 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from "@/components/projekty/ui/sheet";
-import { Button } from "@/components/projekty/ui/button";
-import { Calendar } from "@/components/projekty/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,7 +40,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/projekty/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 
 export function PersonalTodoDetailSheet({
   todo,

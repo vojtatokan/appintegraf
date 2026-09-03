@@ -1,7 +1,7 @@
 "use client";
 
 import { Archive, X } from "lucide-react";
-import { Button } from "@/components/projekty/ui/button";
+import { Button } from "@/components/ui/button";
 import { useBulkSelection } from "./BulkSelectionContext";
 import { BulkMoveListPicker } from "./BulkMoveListPicker";
 import { BulkLabelsPicker } from "./BulkLabelsPicker";

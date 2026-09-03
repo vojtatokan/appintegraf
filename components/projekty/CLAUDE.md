@@ -6,9 +6,11 @@ Podklad pro redesign a roadmapu: `docs/MODUL_PROJEKTY_REDESIGN_RESEARCH.md`.
 
 ## UI komponenty
 
-- Vždy použij existující komponenty z `components/projekty/ui/` (30 vendorovaných shadcn/Radix komponent, `cn` z `@/lib/projekty/utils`). Žádné generické custom prvky, žádné přidávání nových UI knihoven.
-- Dialogy a popovery na mobilu: `responsive-dialog.tsx` / `responsive-popover.tsx` (mění se na sheet/drawer).
-- Toasty: `sonner` (u destruktivních akcí vždy s akcí „Zpět"). Command palette: `cmdk`. Ikony: `lucide-react`. Drag & drop: `@dnd-kit` + sensory z `lib/projekty/dnd-sensors.ts`.
+Vždy použij `@/components/ui/*` (sdílená sada appky). Modul nemá vlastní kopie. Chybí-li komponenta, přidej ji do `components/ui/` standardním shadcn souborem a dej vědět Michalovi.
+
+- Žádné generické custom prvky, žádné přidávání nových UI knihoven, žádné vendorování duplicit do `components/projekty/`.
+- Dialogy a popovery na mobilu: `@/components/ui/responsive-dialog` / `@/components/ui/responsive-popover` (mění se na sheet/drawer).
+- Toasty: `sonner` přes `@/components/ui/sonner` (`<Toaster>` mountnutý v `app/(dashboard)/projekty/layout.tsx`; u destruktivních akcí vždy s akcí „Zpět"). Command palette: `cmdk`. Ikony: `lucide-react`. Drag & drop: `@dnd-kit` + sensory z `lib/projekty/dnd-sensors.ts`.
 
 ## Design tokeny a vizuální jazyk
 

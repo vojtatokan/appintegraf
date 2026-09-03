@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/projekty/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,7 +11,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/projekty/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/projekty/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Archive, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { LIST_PRESET_COLORS } from "@/lib/projekty/list-colors";

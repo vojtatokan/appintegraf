@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/projekty/ui/button";
-import { ConfirmDialog } from "@/components/projekty/ui/confirm-dialog";
-import { EmptyState } from "@/components/projekty/ui/empty-state";
-import { Skeleton } from "@/components/projekty/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Paperclip, Upload, Trash2, FileText } from "lucide-react";
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";

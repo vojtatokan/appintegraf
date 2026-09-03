@@ -2,8 +2,8 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Check, SlidersHorizontal, X } from "lucide-react";
-import { Button } from "@/components/projekty/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { UserAvatar } from "@/components/projekty/UserAvatar";
 import {
   countActiveFilters,

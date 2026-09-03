@@ -3,9 +3,9 @@
 import { Tag } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Button } from "@/components/projekty/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
-import { Checkbox } from "@/components/projekty/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useBulkSelection } from "./BulkSelectionContext";
 
 type LabelLite = { id: string; name: string; color: string };

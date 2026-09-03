@@ -10,9 +10,9 @@ import {
   SheetContent,
   SheetDescription,
   SheetTitle,
-} from "@/components/projekty/ui/sheet";
-import { Button } from "@/components/projekty/ui/button";
-import { Skeleton } from "@/components/projekty/ui/skeleton";
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CardDetailContent, type FullCard } from "./CardDetailContent";
 
 /**

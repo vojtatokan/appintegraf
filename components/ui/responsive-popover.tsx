@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/projekty/ui/sheet";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState(false);

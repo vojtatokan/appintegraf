@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Flag } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "@/components/projekty/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/projekty/utils";
 import {
   CARD_PRIORITIES,

@@ -13,8 +13,8 @@ import { useOptimisticListsMutation } from "@/hooks/projekty/useOptimisticListsM
 import { type ListData } from "./BoardListColumn";
 import { CalendarHeader } from "./CalendarHeader";
 import { CalendarGrid } from "./CalendarGrid";
-import { Button } from "@/components/projekty/ui/button";
-import { EmptyState } from "@/components/projekty/ui/empty-state";
+import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
 import { buildMonthGrid } from "@/lib/projekty/calendar";
 import { parseCalendarMonth } from "@/lib/projekty/board-view";
 import { type CardData } from "./CardItem";

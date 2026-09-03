@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Button } from "@/components/projekty/ui/button";
-import { ConfirmDialog } from "@/components/projekty/ui/confirm-dialog";
-import { EmptyState } from "@/components/projekty/ui/empty-state";
-import { Skeleton } from "@/components/projekty/ui/skeleton";
-import { Textarea } from "@/components/projekty/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
 import { UserAvatar } from "@/components/projekty/UserAvatar";
 import { MessageSquare, Trash2 } from "lucide-react";
 import { format } from "date-fns";

@@ -3,8 +3,8 @@
 import * as React from "react";
 import { Drawer } from "vaul";
 import { useMediaQuery } from "@/hooks/projekty/useMediaQuery";
-import { cn } from "@/lib/projekty/utils";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/projekty/ui/dialog";
+import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export function ResponsiveDialog({
   open,

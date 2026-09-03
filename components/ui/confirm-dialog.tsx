@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/projekty/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 
 export function ConfirmDialog({
   trigger,

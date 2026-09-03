@@ -3,8 +3,8 @@
 import { Move } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Button } from "@/components/projekty/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useBulkSelection } from "./BulkSelectionContext";
 
 type ListLite = { id: string; name: string };

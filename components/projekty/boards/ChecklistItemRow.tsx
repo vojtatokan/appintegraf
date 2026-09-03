@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Checkbox } from "@/components/projekty/ui/checkbox";
-import { Input } from "@/components/projekty/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import { UserAvatar } from "@/components/projekty/UserAvatar";
 import { DueDateBadge } from "@/components/projekty/DueDateBadge";
 import { toast } from "sonner";

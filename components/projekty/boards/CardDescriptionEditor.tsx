@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/projekty/ui/button";
+import { Button } from "@/components/ui/button";
 import { TiptapEditor } from "@/components/projekty/editor/TiptapEditor";
 
 export function CardDescriptionEditor({

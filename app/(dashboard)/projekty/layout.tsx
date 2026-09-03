@@ -1,7 +1,7 @@
 import { Suspense, type ReactNode } from "react";
 import { QuickCaptureProvider } from "@/components/projekty/todos/QuickCaptureProvider";
 import { CommandPalette } from "@/components/projekty/CommandPalette";
-import { Toaster } from "@/components/projekty/ui/sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 // Layout modulu Projekty: quick-capture provider (Ctrl/⌘+Shift+K), command
 // palette (Ctrl/⌘+K) a Toaster pro sonner toasty (modulově scoped — globální

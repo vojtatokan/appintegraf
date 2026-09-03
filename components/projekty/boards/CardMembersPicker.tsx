@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/projekty/ui/popover";
-import { Button } from "@/components/projekty/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/projekty/UserAvatar";
 import { Users, Check } from "lucide-react";
 import { toast } from "sonner";

@@ -2,7 +2,7 @@
 
 import { useIsMac } from "@/hooks/projekty/useIsMac";
 import { formatShortcut } from "@/lib/projekty/platform";
-import { cn } from "@/lib/projekty/utils";
+import { cn } from "@/lib/utils";
 
 /**
  * Platform-aware zobrazení klávesové zkratky: <Kbd shortcut="mod+K" />

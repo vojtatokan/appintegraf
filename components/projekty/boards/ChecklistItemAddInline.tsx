@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/projekty/ui/button";
-import { Input } from "@/components/projekty/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 
 /**
