@@ -129,21 +129,82 @@ export function CardChecklistSection({
         </div>
       ) : null}
 
-      {checklists.map((cl) => (
-        <div key={cl.id} className="space-y-0.5">
+      {checklists.length > 0 ? (
+        <div key={checklists[0].id} className="space-y-0.5">
           {checklists.length > 1 ? (
             <div className="flex items-center justify-between pt-2">
-              <h4 className="text-[13px] font-medium">{cl.name}</h4>
+              <h4 className="text-[13px] font-medium">{checklists[0].name}</h4>
               <ConfirmDialog
                 trigger={<Button size="icon-xs" variant="ghost" aria-label="Smazat seznam" className="text-muted-foreground"><Trash2 className="size-3.5" /></Button>}
-                title={`Smazat seznam „${cl.name}“?`}
+                title={`Smazat seznam „${checklists[0].name}“?`}
                 description="Smaže seznam včetně všech položek."
                 destructive
                 confirmLabel="Smazat"
-                onConfirm={() => handleDeleteChecklist(cl.id)}
+                onConfirm={() => handleDeleteChecklist(checklists[0].id)}
               />
             </div>
           ) : null}
+          {checklists[0].items.map((item) => (
+            <ChecklistItemRow
+              key={item.id}
+              item={item}
+              boardMembers={boardMembers}
+              onUpdate={(updated) =>
+                setChecklists((prev) =>
+                  prev.map((c) =>
+                    c.id === checklists[0].id
+                      ? { ...c, items: c.items.map((i) => (i.id === updated.id ? updated : i)) }
+                      : c,
+                  ),
+                )
+              }
+              onDelete={() =>
+                setChecklists((prev) =>
+                  prev.map((c) =>
+                    c.id === checklists[0].id ? { ...c, items: c.items.filter((i) => i.id !== item.id) } : c,
+                  ),
+                )
+              }
+            />
+          ))}
+        </div>
+      ) : null}
+
+      {/* Stabilní instance napříč přechodem checklistId=null → skutečné id (D12): jedna instance
+          na pevné pozici ve stromu, aby po vytvoření prvního checklistu nedošlo k remountu a
+          zavření řádku (review vlny 6). */}
+      <ChecklistItemAddInline
+        key="first"
+        checklistId={checklists[0]?.id ?? null}
+        busy={creatingFirst}
+        onAdd={async (id, text) => {
+          if (id) {
+            await handleAddItem(id, text);
+            return;
+          }
+          setCreatingFirst(true);
+          try {
+            const cl = await ensureChecklist();
+            if (cl) await handleAddItem(cl.id, text);
+          } finally {
+            setCreatingFirst(false);
+          }
+        }}
+      />
+
+      {checklists.slice(1).map((cl) => (
+        <div key={cl.id} className="space-y-0.5">
+          <div className="flex items-center justify-between pt-2">
+            <h4 className="text-[13px] font-medium">{cl.name}</h4>
+            <ConfirmDialog
+              trigger={<Button size="icon-xs" variant="ghost" aria-label="Smazat seznam" className="text-muted-foreground"><Trash2 className="size-3.5" /></Button>}
+              title={`Smazat seznam „${cl.name}“?`}
+              description="Smaže seznam včetně všech položek."
+              destructive
+              confirmLabel="Smazat"
+              onConfirm={() => handleDeleteChecklist(cl.id)}
+            />
+          </div>
           {cl.items.map((item) => (
             <ChecklistItemRow
               key={item.id}
@@ -170,22 +231,6 @@ export function CardChecklistSection({
           <ChecklistItemAddInline checklistId={cl.id} onAdd={(_id, text) => handleAddItem(cl.id, text)} />
         </div>
       ))}
-
-      {checklists.length === 0 ? (
-        <ChecklistItemAddInline
-          checklistId={null}
-          busy={creatingFirst}
-          onAdd={async (_id, text) => {
-            setCreatingFirst(true);
-            try {
-              const cl = await ensureChecklist();
-              if (cl) await handleAddItem(cl.id, text);
-            } finally {
-              setCreatingFirst(false);
-            }
-          }}
-        />
-      ) : null}
 
       {canAddAnotherChecklist(checklists) ? (
         !addingTitle ? (

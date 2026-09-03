@@ -41,7 +41,7 @@ export function LinkPopover({ editor }: { editor: Editor }) {
           type="button"
           size="icon-sm"
           variant="ghost"
-          className={isActive ? "size-7 bg-muted text-foreground" : "size-7 text-muted-foreground"}
+          className={isActive ? "size-9 sm:size-7 bg-muted text-foreground" : "size-9 sm:size-7 text-muted-foreground"}
           onClick={openPopover}
           aria-label="Odkaz"
         >

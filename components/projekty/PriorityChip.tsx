@@ -30,7 +30,7 @@ export function PriorityChip({
       <span
         className={cn(
           "inline-flex shrink-0 items-center",
-          priority === "URGENT" ? "text-red-600 dark:text-red-400" : "text-orange-600 dark:text-orange-400",
+          priority === "URGENT" ? "text-red-700 dark:text-red-400" : "text-orange-600 dark:text-orange-400",
           className,
         )}
         title={`Priorita: ${label}`}

@@ -55,7 +55,7 @@ export function CardDetailHeader({
           className={cn(
             "mt-1 grid size-[22px] shrink-0 place-items-center rounded-full border-[1.5px] transition-colors duration-150 motion-reduce:transition-none",
             card.completed
-              ? "border-emerald-600 bg-emerald-600 text-white dark:border-emerald-500 dark:bg-emerald-500"
+              ? "border-emerald-600 bg-emerald-600 text-white dark:border-emerald-500 dark:bg-emerald-500 dark:text-emerald-950"
               : "border-border text-transparent hover:border-projekty-accent",
           )}
         >

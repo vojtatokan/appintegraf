@@ -85,7 +85,7 @@ export function ChecklistItemRow({
   const due = item.dueDate ? new Date(item.dueDate) : null;
 
   return (
-    <div className="group flex min-h-8 items-center gap-2 rounded-md px-1 hover:bg-muted/40">
+    <div className="group flex min-h-9 items-center gap-2 rounded-md px-1 hover:bg-muted/40">
       <Checkbox checked={item.done} disabled={busy} onCheckedChange={(v) => void handleToggle(Boolean(v))} className="size-4 rounded" />
       {editing ? (
         <Input

@@ -68,7 +68,7 @@ export function TiptapEditor({
     type: "button" as const,
     size: "icon-sm" as const,
     variant: "ghost" as const,
-    className: active ? "size-7 bg-muted text-foreground" : "size-7 text-muted-foreground",
+    className: active ? "size-9 sm:size-7 bg-muted text-foreground" : "size-9 sm:size-7 text-muted-foreground",
   });
 
   return (

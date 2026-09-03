@@ -415,7 +415,7 @@ function ColumnsList({
                   onListDelete={onListDelete}
                   onListArchive={onListArchive}
                   onCardCreated={onCardCreated}
-                  quickAddOpen={quickAddListId != null ? list.id === quickAddListId : undefined}
+                  quickAddOpen={list.id === quickAddListId ? true : undefined}
                   onQuickAddOpenChange={(open) => {
                     if (!open && list.id === quickAddListId) onQuickAddHandled?.();
                   }}
